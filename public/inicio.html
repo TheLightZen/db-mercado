@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Informe Público — Mercado Popular</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+:root {
+  --aji:#c0392b;
+  --aji-dark:#3b0f0f;
+  --oro:#f39c12;
+  --verde:#1e8449;
+  --morado:#6c3483;
+  --crema:#fdf6e3;
+  --borde:#e8c99a;
+  --text:#2c1503;
+  --muted:#7d5134;
+  --display:'Playfair Display', serif;
+  --sans:'Source Sans 3', sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:var(--sans);
+  background:var(--crema);
+  color:var(--text);
+  min-height:100vh;
+}
+
+.hero{
+  background:linear-gradient(135deg,#3b0f0f,#784212);
+  color:white;
+  padding:50px 70px;
+  position:relative;
+}
+
+.hero::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;height:7px;
+  background:repeating-linear-gradient(90deg,
+    var(--aji) 0,var(--aji) 14px,
+    var(--oro) 14px,var(--oro) 28px,
+    var(--verde) 28px,var(--verde) 42px,
+    var(--morado) 42px,var(--morado) 56px
+  );
+}
+
+.hero h1{
+  font-family:var(--display);
+  font-size:44px;
+  margin-bottom:10px;
+}
+
+.hero p{
+  color:#f5c6a0;
+  max-width:700px;
+  font-size:17px;
+  line-height:1.5;
+}
+
+.actions{
+  margin-top:25px;
+  display:flex;
+  gap:12px;
+}
+
+.btn{
+  border:none;
+  padding:12px 20px;
+  border-radius:10px;
+  font-weight:700;
+  cursor:pointer;
+  text-decoration:none;
+  font-family:var(--sans);
+}
+
+.btn-primary{
+  background:var(--aji);
+  color:white;
+}
+
+.btn-secondary{
+  background:#fff3d6;
+  color:#6e2f1a;
+}
+
+main{
+  padding:32px 70px;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+  margin-bottom:28px;
+}
+
+.card{
+  background:white;
+  border:1.5px solid var(--borde);
+  border-radius:14px;
+  padding:24px;
+  position:relative;
+  overflow:hidden;
+}
+
+.card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;height:4px;
+}
+
+.card:nth-child(1)::before{background:var(--aji)}
+.card:nth-child(2)::before{background:var(--verde)}
+.card:nth-child(3)::before{background:var(--oro)}
+.card:nth-child(4)::before{background:var(--morado)}
+
+.card span{
+  font-size:11px;
+  letter-spacing:1.5px;
+  color:var(--muted);
+  text-transform:uppercase;
+  font-weight:700;
+}
+
+.card h2{
+  font-family:var(--display);
+  font-size:42px;
+  color:#6e2f1a;
+  margin-top:8px;
+}
+
+.info-grid{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:22px;
+}
+
+.panel{
+  background:white;
+  border:1.5px solid var(--borde);
+  border-radius:14px;
+  padding:26px;
+}
+
+.panel h2{
+  font-family:var(--display);
+  color:#6e2f1a;
+  margin-bottom:12px;
+}
+
+.panel p{
+  color:var(--muted);
+  line-height:1.6;
+  font-size:15px;
+}
+
+.mini-list{
+  margin-top:15px;
+  display:grid;
+  gap:10px;
+}
+
+.item{
+  background:#fff8ed;
+  border-left:5px solid var(--aji);
+  padding:12px;
+  border-radius:8px;
+}
+
+.item strong{
+  color:#6e2f1a;
+}
+
+.footer{
+  margin-top:26px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+}
+</style>
+</head>
+
+<body>
+
+<section class="hero">
+  <h1>Mercado Popular Paceño</h1>
+  <p>
+    Sistema informativo para consultar el movimiento general de mercancías,
+    proveedores, categorías y registros recientes del mercado.
+  </p>
+
+  <div class="actions">
+    <button class="btn btn-primary" onclick="generarPDF()">Descargar informe PDF</button>
+    <a class="btn btn-secondary" href="login.html">
+  Entrar al panel administrativo
+</a>
+  </div>
+</section>
+
+<main>
+
+  <div class="cards">
+    <div class="card">
+      <span>Ingresos registrados</span>
+      <h2 id="ingresos">—</h2>
+    </div>
+    <div class="card">
+      <span>Proveedores</span>
+      <h2 id="proveedores">—</h2>
+    </div>
+    <div class="card">
+      <span>Dueños de puesto</span>
+      <h2 id="duenos">—</h2>
+    </div>
+    <div class="card">
+      <span>Categorías</span>
+      <h2 id="categorias">—</h2>
+    </div>
+  </div>
+
+  <div class="info-grid">
+    <section class="panel">
+      <h2>¿Qué hace este sistema?</h2>
+      <p>
+        Este sistema registra y organiza el ingreso de mercancías al mercado.
+        Permite conocer qué productos ingresan, quién los provee, a qué categoría
+        pertenecen y por qué punto de control fueron registrados.
+      </p>
+      <p style="margin-top:12px">
+        La vista pública resume la actividad del mercado y permite descargar
+        un informe general en formato PDF.
+      </p>
+    </section>
+
+    <section class="panel">
+      <h2>Resumen reciente</h2>
+      <div class="mini-list" id="resumen-reciente">
+        <div class="item">Cargando datos...</div>
+      </div>
+    </section>
+  </div>
+
+  <div class="footer">
+    Sistema de Control de Mercancías — Mercado Popular
+  </div>
+
+</main>
+
+<script>
+const API = 'http://localhost:3001/api';
+
+let dashboardData = null;
+let ingresosData = [];
+
+async function cargarDatos() {
+  dashboardData = await fetch(API + '/dashboard').then(r => r.json());
+  ingresosData = await fetch(API + '/ingresos').then(r => r.json());
+
+  document.getElementById('ingresos').textContent = dashboardData.stats.ingresos;
+  document.getElementById('proveedores').textContent = dashboardData.stats.proveedores;
+  document.getElementById('duenos').textContent = dashboardData.stats.duenos;
+  document.getElementById('categorias').textContent = dashboardData.stats.categorias;
+
+  const contenedor = document.getElementById('resumen-reciente');
+
+  if (ingresosData.length === 0) {
+    contenedor.innerHTML = '<div class="item">No existen ingresos registrados.</div>';
+    return;
+  }
+
+  contenedor.innerHTML = ingresosData.slice(0, 4).map(i => `
+    <div class="item">
+      <strong>${i.nombreProducto}</strong><br>
+      ${i.pesoCantidad} ${i.UnidadMedida} — ${i.nombre_categoria}<br>
+      Proveedor: ${i.proveedor}
+    </div>
+  `).join('');
+}
+
+async function generarPDF() {
+
+  if (!dashboardData) {
+    alert('Los datos aún están cargando');
+    return;
+  }
+
+  const { jsPDF } = window.jspdf;
+
+  const doc = new jsPDF({
+    orientation: 'portrait',
+    unit: 'mm',
+    format: 'a4'
+  });
+
+  const fecha = new Date().toLocaleDateString('es-BO');
+
+  // ═══════════════ HEADER ═══════════════
+
+  doc.setFillColor(59, 15, 15);
+  doc.rect(0, 0, 210, 38, 'F');
+
+  // Línea decorativa aguayo
+  const colores = [
+    [192,57,43],
+    [243,156,18],
+    [30,132,73],
+    [108,52,131]
+  ];
+
+  let x = 0;
+
+  for(let i=0;i<30;i++){
+
+    const c = colores[i % colores.length];
+
+    doc.setFillColor(c[0], c[1], c[2]);
+    doc.rect(x, 0, 7, 6, 'F');
+
+    x += 7;
+  }
+
+  // Título
+  doc.setTextColor(255,255,255);
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(24);
+
+  doc.text('MERCADO POPULAR PACEÑO', 15, 20);
+
+  doc.setFontSize(11);
+  doc.setTextColor(245,198,160);
+
+  doc.text('Sistema de Control e Informe de Mercancías', 15, 29);
+
+  // Fecha
+  doc.setTextColor(255,255,255);
+  doc.setFontSize(10);
+
+  doc.text('Fecha de emisión: ' + fecha, 150, 20);
+
+  // ═══════════════ RESUMEN ═══════════════
+
+  doc.setTextColor(44,21,3);
+
+  doc.setFontSize(18);
+  doc.setFont('helvetica', 'bold');
+
+  doc.text('Resumen General', 15, 55);
+
+  // Cards estadísticas
+  const cards = [
+    ['Ingresos', dashboardData.stats.ingresos, [192,57,43]],
+    ['Proveedores', dashboardData.stats.proveedores, [30,132,73]],
+    ['Dueños', dashboardData.stats.duenos, [243,156,18]],
+    ['Categorías', dashboardData.stats.categorias, [108,52,131]]
+  ];
+
+  let startX = 15;
+
+  cards.forEach(card => {
+
+    const [titulo, valor, color] = card;
+
+    doc.setFillColor(255,248,237);
+    doc.roundedRect(startX, 65, 42, 28, 4, 4, 'F');
+
+    doc.setDrawColor(color[0], color[1], color[2]);
+    doc.setLineWidth(.8);
+
+    doc.roundedRect(startX, 65, 42, 28, 4, 4);
+
+    // barra superior
+    doc.setFillColor(color[0], color[1], color[2]);
+    doc.roundedRect(startX, 65, 42, 4, 2, 2, 'F');
+
+    doc.setTextColor(120,66,18);
+
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'bold');
+
+    doc.text(titulo.toUpperCase(), startX + 4, 75);
+
+    doc.setTextColor(44,21,3);
+
+    doc.setFontSize(20);
+
+    doc.text(String(valor), startX + 4, 87);
+
+    startX += 46;
+  });
+
+  // ═══════════════ DESCRIPCIÓN ═══════════════
+
+  doc.setTextColor(44,21,3);
+
+  doc.setFontSize(18);
+  doc.setFont('helvetica', 'bold');
+
+  doc.text('Descripción del Sistema', 15, 115);
+
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'normal');
+
+  const descripcion = `
+Este sistema permite registrar, controlar y monitorear el ingreso de mercancías 
+al mercado popular. Facilita la organización de proveedores, categorías de productos,
+dueños de puesto y puntos de control, permitiendo una administración más eficiente 
+y trazable del movimiento comercial del mercado.
+  `;
+
+  const texto = doc.splitTextToSize(descripcion, 175);
+
+  doc.text(texto, 15, 125);
+
+  // ═══════════════ ÚLTIMOS INGRESOS ═══════════════
+
+  doc.setFontSize(18);
+  doc.setFont('helvetica', 'bold');
+
+  doc.text('Últimos Ingresos Registrados', 15, 165);
+
+  // Tabla
+  let y = 178;
+
+  // encabezado
+  doc.setFillColor(59,15,15);
+  doc.rect(15, y, 180, 10, 'F');
+
+  doc.setTextColor(255,231,194);
+
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'bold');
+
+  doc.text('Producto', 18, y + 6.5);
+  doc.text('Categoría', 72, y + 6.5);
+  doc.text('Cantidad', 112, y + 6.5);
+  doc.text('Proveedor', 145, y + 6.5);
+
+  y += 10;
+
+  ingresosData.slice(0,8).forEach((i, index) => {
+
+    // fondo alternado
+    if(index % 2 === 0){
+      doc.setFillColor(255,248,237);
+      doc.rect(15, y, 180, 10, 'F');
+    }
+
+    doc.setTextColor(44,21,3);
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+
+    doc.text(String(i.nombreProducto).substring(0,22), 18, y + 6);
+    doc.text(String(i.nombre_categoria).substring(0,14), 72, y + 6);
+    doc.text(`${i.pesoCantidad} ${i.UnidadMedida}`, 112, y + 6);
+    doc.text(String(i.proveedor).substring(0,18), 145, y + 6);
+
+    y += 10;
+  });
+
+  // ═══════════════ FOOTER ═══════════════
+
+  doc.setDrawColor(232,201,154);
+  doc.line(15, 280, 195, 280);
+
+  doc.setTextColor(125,81,52);
+
+  doc.setFontSize(9);
+
+  doc.text(
+    'Sistema de Gestión de Mercancías — Mercado Popular Paceño',
+    15,
+    287
+  );
+
+  doc.text(
+    'Documento generado automáticamente',
+    145,
+    287
+  );
+
+  // ═══════════════ GUARDAR ═══════════════
+
+  doc.save('informe_mercado_popular.pdf');
+}
+
+cargarDatos();
+</script>
+
+</body>
+</html>

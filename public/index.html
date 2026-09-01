@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mercado  — Sistema de Gestión</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Paleta paceña: tierra, ají, chicha, aguayo */
+  --aji:        #c0392b;   /* rojo ají */
+  --aji-dark:   #96281b;
+  --aji-light:  #f5b7b1;
+  --chicha:     #a04000;   /* café chicha */
+  --chicha-d:   #784212;
+  --oro:        #f39c12;   /* amarillo quinua / aguayo */
+  --oro-light:  #fdebd0;
+  --verde:      #1e8449;   /* verde coca */
+  --verde-light:#d5f5e3;
+  --morado:     #6c3483;   /* morado aguayo */
+  --morado-l:   #e8daef;
+  --tierra:     #6e2f1a;   /* tierra paceña */
+  --crema:      #fdf6e3;   /* crema hoja de coca */
+  --crema2:     #fef9f0;
+  --borde:      #e8c99a;
+  --text:       #2c1503;
+  --muted:      #7d5134;
+  --muted2:     #a0785a;
+  --sidebar-bg: #3b0f0f;   /* guindo oscuro */
+  --sidebar2:   #4e1414;
+  --sans: 'Source Sans 3', sans-serif;
+  --display: 'Playfair Display', serif;
+  --r: 12px;
+  --r-sm: 8px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--crema);color:var(--text);font-family:var(--sans);font-size:14px;min-height:100vh;display:flex}
+
+/* ── Patrón de fondo aguayo ── */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    repeating-linear-gradient(90deg,rgba(192,57,43,.04) 0px,rgba(192,57,43,.04) 2px,transparent 2px,transparent 32px),
+    repeating-linear-gradient(0deg,rgba(243,156,18,.04) 0px,rgba(243,156,18,.04) 2px,transparent 2px,transparent 32px);
+}
+
+/* ══════════ SIDEBAR ══════════ */
+
+
+
+aside{
+  width:230px;min-height:100vh;background:var(--sidebar-bg);
+  border-right:3px solid var(--aji);
+  display:flex;flex-direction:column;
+  position:fixed;top:0;left:0;bottom:0;z-index:10;
+}
+
+/* Franja decorativa aguayo arriba */
+aside::before{
+  content:'';display:block;height:6px;
+  background:repeating-linear-gradient(90deg,
+    var(--aji) 0,var(--aji) 14px,
+    var(--oro) 14px,var(--oro) 28px,
+    var(--verde) 28px,var(--verde) 42px,
+    var(--morado) 42px,var(--morado) 56px,
+    var(--chicha) 56px,var(--chicha) 70px,
+    var(--aji) 70px
+  );
+}
+
+.logo{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,.1)}
+
+.logo-top{
+  display:flex;
+  align-items:center;
+}
+
+.logo h1{
+  font-family:var(--display);
+
+  font-size:31px;
+
+  font-weight:700;
+
+  color:#fff;
+
+  line-height:1;
+
+  letter-spacing:.3px;
+}
+
+.logo span{
+  display:block;
+
+  margin-top:10px;
+
+  font-size:11px;
+
+  color:#f5b7b1;
+
+  letter-spacing:3px;
+
+  text-transform:uppercase;
+}
+
+
+.logo h1{font-family:var(--display);font-size:19px;font-weight:700;color:#fff;line-height:1.1}
+.logo span{
+  display:block;
+
+  margin-top:10px;
+
+  font-size:11px;
+
+  color:#f5b7b1;
+
+  letter-spacing:3px;
+
+  text-transform:uppercase;
+
+  text-align:center;
+}
+
+nav{flex:1;padding:10px 0}
+.nav-section{
+  padding:10px 18px 4px;
+  font-size:9.5px;color:rgba(253,198,154,.6);letter-spacing:2px;text-transform:uppercase;font-weight:700
+}
+.nav-item{
+  display:flex;align-items:center;gap:10px;padding:9px 18px;
+  color:#fde8c8;cursor:pointer;transition:all .15s;
+  font-size:13.5px;font-weight:500;border-left:3px solid transparent;position:relative;
+}
+.nav-item:hover{color:#fff;background:rgba(192,57,43,.2);border-left-color:rgba(192,57,43,.5)}
+.nav-item.active{
+  color:#fff;
+  background:linear-gradient(90deg,rgba(192,57,43,.35),rgba(192,57,43,.1));
+  border-left-color:var(--oro);
+}
+.nav-item.active::after{
+  content:'';position:absolute;right:0;top:20%;bottom:20%;width:2px;
+  background:var(--oro);border-radius:2px;
+}
+.nav-item svg{width:16px;height:16px;flex-shrink:0}
+
+/* Franja decorativa abajo */
+.sidebar-footer{
+  padding:12px 18px 14px;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+.status-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.status-dot.ok{background:var(--verde);box-shadow:0 0 6px var(--verde)}
+.status-dot.err{background:var(--aji)}
+.status-dot.loading{background:var(--oro);animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
+.status-text{font-size:11px;color:#f0c8a0}
+
+/* ══════════ MAIN ══════════ */
+main{margin-left:230px;flex:1;padding:30px 36px;min-height:100vh;position:relative;z-index:1}
+
+.page{display:none;animation:fadeIn .25s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ── Encabezado de página ── */
+.page-header{
+  display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;
+  padding-bottom:20px;border-bottom:2px solid var(--borde);position:relative;
+}
+.page-header::after{
+  content:'';position:absolute;bottom:-2px;left:0;width:60px;height:2px;background:var(--aji);
+}
+.page-header h2{font-family:var(--display);font-size:26px;font-weight:700;color:var(--tierra);line-height:1.1}
+.page-header p{color:var(--muted2);font-size:13px;margin-top:4px}
+
+/* ── Stats ── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.stat-card{
+  background:#fff;border:1.5px solid var(--borde);border-radius:var(--r);
+  padding:20px 18px;position:relative;overflow:hidden;
+  transition:transform .2s,box-shadow .2s;
+}
+.stat-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(110,47,26,.12)}
+
+/* Barra superior de color por categoría */
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.stat-card:nth-child(1)::before{background:var(--aji)}
+.stat-card:nth-child(2)::before{background:var(--verde)}
+.stat-card:nth-child(3)::before{background:var(--oro)}
+.stat-card:nth-child(4)::before{background:var(--morado)}
+
+/* Patrón decorativo esquina */
+.stat-card::after{
+  content:'';position:absolute;bottom:-8px;right:-8px;
+  width:56px;height:56px;border-radius:50%;
+  background:rgba(160,64,0,.06);
+}
+
+.stat-label{font-size:10px;color:var(--muted2);letter-spacing:1.5px;text-transform:uppercase;font-weight:600;margin-bottom:10px}
+.stat-value{font-family:var(--display);font-size:38px;font-weight:900;color:var(--tierra);line-height:1}
+.stat-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);opacity:.08}
+.stat-icon svg{width:52px;height:52px}
+
+/* ── Tarjeta de tabla ── */
+.table-card{background:#fff;border:1.5px solid var(--borde);border-radius:var(--r);overflow:hidden}
+.table-toolbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px;
+  background:linear-gradient(to right,#fff8ed,#fff);
+  border-bottom:1.5px solid var(--borde);
+}
+.table-toolbar h3{
+  font-family:var(--display);font-size:15px;font-weight:700;color:var(--tierra);
+  display:flex;align-items:center;gap:8px;
+}
+.table-toolbar h3::before{
+  content:'';display:inline-block;width:10px;height:10px;
+  background:var(--aji);border-radius:50%;flex-shrink:0;
+}
+.toolbar-actions{display:flex;gap:10px;align-items:center}
+
+.search-box{
+  display:flex;align-items:center;gap:8px;
+  background:var(--crema);border:1.5px solid var(--borde);border-radius:var(--r-sm);
+  padding:6px 12px;transition:border-color .15s;
+}
+.search-box:focus-within{border-color:var(--aji)}
+.search-box svg{width:14px;height:14px;color:var(--muted2)}
+.search-box input{background:none;border:none;outline:none;color:var(--text);font-size:13px;width:150px;font-family:var(--sans)}
+.search-box input::placeholder{color:var(--muted2)}
+
+table{width:100%;border-collapse:collapse}
+th{
+  background:linear-gradient(to bottom,#4e1414,#3b0f0f);
+  padding:9px 16px;text-align:left;
+  font-size:10.5px;color:#f5c6a0;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;
+  border-bottom:2px solid var(--aji-dark);
+}
+td{padding:11px 16px;border-bottom:1px solid #f5e8d3;font-size:13px;color:var(--text)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fef6ea}
+
+/* ── Badges ── */
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.3px}
+.badge-aji    {background:#fde8e6;color:#8b1a0d}
+.badge-verde  {background:#d5f5e3;color:#0e5a28}
+.badge-oro    {background:#fef0cc;color:#7d4e00}
+.badge-morado {background:#ede0f5;color:#4a1466}
+.badge-chicha {background:#f9ddd0;color:#6b2a0f}
+
+/* ── Botones ── */
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 18px;border-radius:var(--r-sm);font-size:13px;font-weight:600;
+  cursor:pointer;transition:all .15s;border:none;font-family:var(--sans);letter-spacing:.2px;
+}
+.btn-primary{background:var(--aji);color:#fff;box-shadow:0 2px 8px rgba(192,57,43,.3)}
+.btn-primary:hover{background:var(--aji-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(192,57,43,.35)}
+.btn-ghost{background:transparent;color:var(--muted);border:1.5px solid var(--borde)}
+.btn-ghost:hover{color:var(--text);border-color:var(--chicha);background:#fdf0e0}
+.btn svg{width:15px;height:15px}
+
+.btn-icon{
+  background:#fff;border:1.5px solid var(--borde);color:var(--muted2);
+  border-radius:var(--r-sm);padding:5px 9px;cursor:pointer;
+  transition:all .15s;font-size:12px;
+}
+.btn-icon:hover{border-color:var(--chicha);color:var(--chicha);background:#fdf0e0}
+.btn-icon.danger:hover{border-color:var(--aji);color:var(--aji);background:#fde8e6}
+.actions{display:flex;gap:6px}
+
+/* ── Modal ── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(30,10,5,.72);
+  backdrop-filter:blur(4px);z-index:100;align-items:center;justify-content:center;
+}
+.modal-overlay.open{display:flex}
+.modal{
+  background:#fff;border:2px solid var(--borde);border-radius:var(--r);
+  width:560px;max-width:95vw;max-height:90vh;overflow-y:auto;
+  animation:slideUp .22s ease;box-shadow:0 20px 60px rgba(110,47,26,.2);
+}
+/* Franja aguayo modal */
+.modal::before{
+  content:'';display:block;height:5px;
+  background:repeating-linear-gradient(90deg,
+    var(--aji) 0,var(--aji) 12px,
+    var(--oro) 12px,var(--oro) 24px,
+    var(--verde) 24px,var(--verde) 36px,
+    var(--morado) 36px,var(--morado) 48px,
+    var(--chicha) 48px,var(--chicha) 60px,
+    var(--aji) 60px
+  );
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.modal-header{padding:18px 24px 14px;border-bottom:1.5px solid var(--borde);display:flex;align-items:center;justify-content:space-between}
+.modal-header h3{font-family:var(--display);font-size:18px;font-weight:700;color:var(--tierra)}
+.modal-close{background:none;border:none;color:var(--muted2);cursor:pointer;font-size:22px;line-height:1;padding:2px 6px;border-radius:6px;transition:all .15s}
+.modal-close:hover{background:#fde8e6;color:var(--aji)}
+.modal-body{padding:22px 24px}
+.modal-footer{padding:14px 24px;border-top:1.5px solid var(--borde);display:flex;justify-content:flex-end;gap:10px}
+
+/* ── Formulario ── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-grid.cols-1{grid-template-columns:1fr}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group.full{grid-column:1/-1}
+label{font-size:11.5px;color:var(--muted);letter-spacing:.5px;font-weight:600;text-transform:uppercase}
+input,select,textarea{
+  background:var(--crema);border:1.5px solid var(--borde);border-radius:var(--r-sm);
+  color:var(--text);padding:9px 12px;font-size:13px;font-family:var(--sans);
+  outline:none;transition:border .15s;width:100%;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--aji);background:#fff}
+select option{background:#fff}
+textarea{resize:vertical;min-height:72px}
+
+/* ── Toast ── */
+#toast{
+  position:fixed;bottom:28px;right:28px;z-index:999;
+  background:#fff;border:1.5px solid var(--borde);border-radius:var(--r);
+  padding:13px 18px;font-size:13px;min-width:240px;
+  display:flex;align-items:center;gap:10px;
+  transform:translateY(80px);opacity:0;transition:all .3s;pointer-events:none;
+  box-shadow:0 8px 24px rgba(110,47,26,.15);
+}
+#toast.show{transform:none;opacity:1}
+#toast.success{border-left:4px solid var(--verde)}
+#toast.error{border-left:4px solid var(--aji)}
+.toast-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+#toast.success .toast-dot{background:var(--verde)}
+#toast.error .toast-dot{background:var(--aji)}
+
+/* ── Empty/loading ── */
+.empty{padding:48px;text-align:center;color:var(--muted2);font-size:13px}
+.spinner{display:inline-block;width:20px;height:20px;border:2px solid var(--borde);border-top-color:var(--aji);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.recent-row-date{color:var(--muted2);font-size:12px}
+
+/* ══════════ DASHBOARD ESPECIAL ══════════ */
+.dash-welcome{
+  background:linear-gradient(135deg,var(--sidebar-bg),var(--chicha-d));
+  border-radius:var(--r);padding:24px 28px;margin-bottom:28px;
+  position:relative;overflow:hidden;border:2px solid var(--aji-dark);
+}
+.dash-welcome::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:5px;
+  background:repeating-linear-gradient(90deg,
+    var(--aji) 0,var(--aji) 10px,var(--oro) 10px,var(--oro) 20px,
+    var(--verde) 20px,var(--verde) 30px,var(--morado) 30px,var(--morado) 40px,
+    var(--chicha) 40px,var(--chicha) 50px,var(--aji) 50px
+  );
+}
+.dash-welcome::after{
+  content:'';position:absolute;right:28px;top:50%;transform:translateY(-50%);
+  font-size:52px;opacity:.15;
+}
+.dash-welcome h3{font-family:var(--display);font-size:21px;color:#fff;font-weight:700;margin-bottom:5px}
+.dash-welcome p{color:#f5c6a0;font-size:13px}
+
+/* ══════════ DECORACIÓN LATERAL AGUAYO ══════════ */
+.aguayo-stripe{
+  height:4px;width:100%;margin-bottom:20px;border-radius:2px;
+  background:repeating-linear-gradient(90deg,
+    var(--aji) 0,var(--aji) 8px,var(--oro) 8px,var(--oro) 16px,
+    var(--verde) 16px,var(--verde) 24px,var(--morado) 24px,var(--morado) 32px
+  );
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ SIDEBAR ═══════════════════════════════ -->
+<aside>
+  <div class="logo">
+    
+     
+      <h1>Mercado<br>Popular</h1>
+    
+    <span>Sistema de gestión</span>
+  </div>
+  <nav>
+    <div class="nav-section">General</div>
+    <div class="nav-item active" data-page="dashboard">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      Dashboard
+    </div>
+    <div class="nav-section">Módulos</div>
+    <div class="nav-item" data-page="ingresos">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" d="M20 7H4a1 1 0 00-1 1v10a1 1 0 001 1h16a1 1 0 001-1V8a1 1 0 00-1-1z"/><path stroke-linecap="round" d="M16 3H8l-1 4h10l-1-4z"/></svg>
+      Ingreso Mercancía
+    </div>
+    <div class="nav-item" data-page="duenos">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline stroke-linecap="round" points="9 22 9 12 15 12 15 22"/></svg>
+      Dueños de Puesto
+    </div>
+    <div class="nav-item" data-page="proveedores">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/></svg>
+      Proveedores
+    </div>
+    <div class="nav-item" data-page="categorias">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"/></svg>
+      Categorías
+    </div>
+    <div class="nav-item" data-page="sectores">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M3.6 9h16.8M3.6 15h16.8M11.5 3a17 17 0 000 18M12.5 3a17 17 0 010 18"/></svg>
+      Sectores
+    </div>
+    <div class="nav-item" data-page="personas">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path stroke-linecap="round" d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      Personas / Usuarios
+    </div>
+  </nav>
+ <div class="sidebar-footer">
+
+  <div class="status-row">
+    <div class="status-dot loading" id="statusDot"></div>
+    <div class="status-text" id="statusLabel">Conectando…</div>
+  </div>
+
+  <button class="btn btn-ghost" style="width:100%;margin-top:12px" onclick="logout()">
+    Cerrar sesión
+  </button>
+
+</div>
+</aside>
+
+<!-- ═══════════════════════════════ MAIN ═════════════════════════════════ -->
+<main>
+
+  <!-- DASHBOARD -->
+  <section class="page active" id="page-dashboard">
+    <div class="page-header">
+      <div>
+        <h2>Dashboard</h2>
+        <p>Resumen general del sistema</p>
+      </div>
+    </div>
+
+    <div class="dash-welcome">
+      <h3>¡Bienvenido al Sistema del Mercado!</h3>
+      <p>Gestión centralizada de ingresos, proveedores y puestos del mercado paceño</p>
+    </div>
+
+    <div class="stats" id="stats">
+      <div class="stat-card">
+        <div class="stat-label">Ingresos</div>
+        <div class="stat-value" id="st-ingresos">—</div>
+        <div class="stat-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M20 7H4a1 1 0 00-1 1v10a1 1 0 001 1h16a1 1 0 001-1V8a1 1 0 00-1-1z"/></svg></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Proveedores</div>
+        <div class="stat-value" id="st-proveedores">—</div>
+        <div class="stat-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Dueños</div>
+        <div class="stat-value" id="st-duenos">—</div>
+        <div class="stat-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Categorías</div>
+        <div class="stat-value" id="st-categorias">—</div>
+        <div class="stat-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"/></svg></div>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-toolbar"><h3>Últimos ingresos de mercancía</h3></div>
+      <table>
+        <thead><tr><th>Producto</th><th>Categoría</th><th>Cantidad</th><th>Dueño</th><th>Fecha</th></tr></thead>
+        <tbody id="recent-tbody"><tr><td colspan="5" class="empty">Cargando…</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- INGRESOS -->
+  <section class="page" id="page-ingresos">
+    <div class="page-header">
+      <div><h2>Ingreso de Mercancía</h2><p>Registra y gestiona los ingresos al mercado</p></div>
+      <button class="btn btn-primary" onclick="openModal('ingreso')">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" d="M12 4v16m8-8H4"/></svg>
+        Nuevo Ingreso
+      </button>
+    </div>
+    <div class="table-card">
+      <div class="table-toolbar">
+        <h3>Todos los ingresos</h3>
+        <div class="toolbar-actions">
+          <div class="search-box"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg><input id="search-ingresos" placeholder="Buscar producto…" oninput="filterTable('ingresos-tbody',this.value)"/></div>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>ID</th><th>Producto</th><th>Categoría</th><th>Cantidad</th><th>Proveedor</th><th>Fecha</th><th>Acciones</th></tr></thead>
+        <tbody id="ingresos-tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- DUEÑOS -->
+  <section class="page" id="page-duenos">
+    <div class="page-header">
+      <div><h2>Dueños de Puesto</h2><p>Administra los propietarios de puestos del mercado</p></div>
+      <button class="btn btn-primary" onclick="openModal('dueno')">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" d="M12 4v16m8-8H4"/></svg>
+        Nuevo Dueño
+      </button>
+    </div>
+    <div class="table-card">
+      <div class="table-toolbar">
+        <h3>Listado de dueños</h3>
+        <div class="toolbar-actions">
+          <div class="search-box"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg><input placeholder="Buscar…" oninput="filterTable('duenos-tbody',this.value)"/></div>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>ID</th><th>Nombre</th><th>Puesto</th><th>Sector</th><th>Acciones</th></tr></thead>
+        <tbody id="duenos-tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- PROVEEDORES -->
+  <section class="page" id="page-proveedores">
+    <div class="page-header">
+      <div><h2>Proveedores</h2><p>Gestiona los proveedores del mercado</p></div>
+      <button class="btn btn-primary" onclick="openModal('proveedor')">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" d="M12 4v16m8-8H4"/></svg>
+        Nuevo Proveedor
+      </button>
+    </div>
+    <div class="table-card">
+      <div class="table-toolbar">
+        <h3>Listado de proveedores</h3>
+        <div class="toolbar-actions">
+          <div class="search-box"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg><input placeholder="Buscar…" oninput="filterTable('proveedores-tbody',this.value)"/></div>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>ID</th><th>Nombre</th><th>Celular</th><th>Placa</th><th>Departamento</th><th>Acciones</th></tr></thead>
+        <tbody id="proveedores-tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- CATEGORÍAS -->
+  <section class="page" id="page-categorias">
+    <div class="page-header">
+      <div><h2>Categorías</h2><p>Gestiona las categorías de productos</p></div>
+      <button class="btn btn-primary" onclick="openModal('categoria')">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" d="M12 4v16m8-8H4"/></svg>
+        Nueva Categoría
+      </button>
+    </div>
+    <div class="table-card">
+      <div class="table-toolbar"><h3>Listado de categorías</h3></div>
+      <table>
+        <thead><tr><th>ID</th><th>Nombre</th><th>Descripción</th><th>Acciones</th></tr></thead>
+        <tbody id="categorias-tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECTORES -->
+  <section class="page" id="page-sectores">
+    <div class="page-header">
+  <div>
+    <h2>Sectores del Mercado</h2>
+    <p>Áreas y zonas del mercado</p>
+  </div>
+
+  <button class="btn btn-primary" onclick="openModal('sector')">
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" d="M12 4v16m8-8H4"/>
+    </svg>
+    Nuevo Sector
+  </button>
+</div>
+    <div class="table-card">
+      <div class="table-toolbar"><h3>Listado de sectores</h3></div>
+      <table>
+        <thead>
+  <tr>
+    <th>ID</th>
+    <th>Nombre</th>
+    <th>Descripción</th>
+    <th>Acciones</th>
+  </tr>
+</thead>
+        <tbody id="sectores-tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- PERSONAS -->
+  <section class="page" id="page-personas">
+    <div class="page-header">
+      <div><h2>Directorio de Personas</h2>
+<p>Personas registradas y su rol dentro del sistema</p></div>
+    </div>
+    <div class="table-card">
+      <div class="table-toolbar"><h3>Listado de personas</h3></div>
+      <table>
+        <thead>
+  <tr>
+    <th>ID</th>
+    <th>Nombre completo</th>
+    <th>CI</th>
+    <th>Rol</th>
+    <th>Teléfono</th>
+  </tr>
+</thead>
+        <tbody id="personas-tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══════════════════════════════ MODALES ═══════════════════════════════ -->
+
+<!-- Modal Ingreso -->
+<div class="modal-overlay" id="modal-ingreso">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-ingreso-title">Nuevo Ingreso de Mercancía</h3>
+      <button class="modal-close" onclick="closeModal('ingreso')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Fecha de Entrada</label><input id="i-fecha" type="date"/></div>
+        <div class="form-group full"><label>Nombre del Producto</label><input id="i-producto" type="text" placeholder="Ej. Tomates frescos"/></div>
+        <div class="form-group"><label>Peso / Cantidad</label><input id="i-cantidad" type="number" step="0.01" placeholder="50.00"/></div>
+        <div class="form-group"><label>Unidad de Medida</label>
+          <select id="i-unidad">
+            <option value="kg">Kilogramos (kg)</option>
+            <option value="lb">Libras (lb)</option>
+            <option value="unidades">Unidades</option>
+            <option value="cajas">Cajas</option>
+            <option value="sacos">Sacos</option>
+            <option value="litros">Litros</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Categoría</label><select id="i-categoria"></select></div>
+        <div class="form-group"><label>Dueño de Puesto</label><select id="i-dueno"></select></div>
+        <div class="form-group"><label>Proveedor</label><select id="i-proveedor"></select></div>
+        <div class="form-group"><label>Punto de Control</label><select id="i-punto"></select></div>
+        <div class="form-group full"><label>Observaciones</label><textarea id="i-obs" placeholder="Notas adicionales…"></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('ingreso')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveIngreso()">Guardar Ingreso</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Dueño -->
+<div class="modal-overlay" id="modal-dueno">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-dueno-title">Nuevo Dueño de Puesto</h3>
+      <button class="modal-close" onclick="closeModal('dueno')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Cédula de Identidad (CI)</label><input id="d-ci" type="text" placeholder="1234567 LP"/></div>
+        <div class="form-group"><label>Nombres</label><input id="d-nombres" type="text" placeholder="Ej. Juan"/></div>
+        <div class="form-group"><label>Primer Apellido</label><input id="d-paterno" type="text" placeholder="Ej. Pérez"/></div>
+        <div class="form-group"><label>Segundo Apellido (Opcional)</label><input id="d-materno" type="text" placeholder="Ej. López"/></div>
+        <div class="form-group">
+  <label>Celular / Teléfono</label>
+  <input id="d-telefono" type="text" placeholder="Ej. 71524361">
+</div>
+        <div class="form-group"><label>Número de Puesto</label><input id="d-puesto" type="text" placeholder="A-12"/></div>
+        <div class="form-group full"><label>Sector</label><select id="d-sector"></select></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('dueno')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveDueno()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Proveedor -->
+<div class="modal-overlay" id="modal-proveedor">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-proveedor-title">Nuevo Proveedor</h3>
+      <button class="modal-close" onclick="closeModal('proveedor')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Celular</label><input id="p-celular" type="text" placeholder="7XXXXXXX"/></div>
+        <div class="form-group full"><label>Nombre del Proveedor</label><input id="p-nombre" type="text" placeholder="Distribuidora La Paz"/></div>
+        <div class="form-group"><label>Placa del Vehículo</label><input id="p-placa" type="text" placeholder="2345-LPZ"/></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('proveedor')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveProveedor()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Categoría -->
+<div class="modal-overlay" id="modal-categoria">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-categoria-title">Nueva Categoría</h3>
+      <button class="modal-close" onclick="closeModal('categoria')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid cols-1">
+        <div class="form-group"><label>Nombre</label><input id="c-nombre" type="text" placeholder="Verduras y Hortalizas"/></div>
+        <div class="form-group"><label>Descripción</label><textarea id="c-desc" placeholder="Descripción de la categoría…"></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('categoria')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveCategoria()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal Sector -->
+<div class="modal-overlay" id="modal-sector">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-sector-title">Nuevo Sector</h3>
+      <button class="modal-close" onclick="closeModal('sector')">×</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-grid cols-1">
+        <div class="form-group">
+          <label>Nombre del Sector</label>
+          <input id="s-nombre" type="text" placeholder="Ej. Sector Lácteos">
+        </div>
+
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea id="s-desc" placeholder="Descripción del sector..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('sector')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveSector()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Toast -->
+<div id="toast"><div class="toast-dot"></div><span id="toast-msg"></span></div>
+
+<script>
+
+  if(localStorage.getItem('adminAuth') !== 'true'){
+  window.location.href = 'login.html';
+}
+
+
+
+const API = 'http://localhost:3001/api';
+let editingId = null;
+let currentModal = null;
+let cache = { categorias:[], duenos:[], proveedores:[], puntos:[], usuarios:[], sectores:[] };
+
+
+
+function campoVacio(id) {
+  return document.getElementById(id).value.trim() === '';
+}
+
+function numeroMenorIgualCero(id) {
+  return Number(document.getElementById(id).value) <= 0;
+}
+
+function validarTexto(id, mensaje) {
+  if (campoVacio(id)) {
+    toast(mensaje, 'error');
+    return false;
+  }
+  return true;
+}
+
+function validarSelect(id, mensaje) {
+  if (campoVacio(id)) {
+    toast(mensaje, 'error');
+    return false;
+  }
+  return true;
+}
+
+
+
+
+function toast(msg, type='success') {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.className = 'show ' + type;
+  setTimeout(() => t.className = '', 3000);
+}
+
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    item.classList.add('active');
+    const page = item.dataset.page;
+    document.getElementById('page-' + page).classList.add('active');
+    loadPage(page);
+  });
+});
+
+async function checkConnection() {
+  const dot = document.getElementById('statusDot');
+  const label = document.getElementById('statusLabel');
+  try {
+    const r = await fetch(API + '/ping');
+    if (r.ok) { dot.className='status-dot ok'; label.textContent='Base de datos conectada'; }
+    else throw new Error();
+  } catch { dot.className='status-dot err'; label.textContent='Sin conexión al servidor'; }
+}
+
+async function loadPage(page) {
+  const loaders = { dashboard:loadDashboard, ingresos:loadIngresos, duenos:loadDuenos, proveedores:loadProveedores, categorias:loadCategorias, sectores:loadSectores, personas:loadPersonas };
+  if (loaders[page]) loaders[page]();
+}
+
+async function loadDashboard() {
+  try {
+    const d = await fetch(API + '/dashboard').then(r => r.json());
+    document.getElementById('st-ingresos').textContent    = d.stats.ingresos;
+    document.getElementById('st-proveedores').textContent = d.stats.proveedores;
+    document.getElementById('st-duenos').textContent      = d.stats.duenos;
+    document.getElementById('st-categorias').textContent  = d.stats.categorias;
+    const tbody = document.getElementById('recent-tbody');
+    tbody.innerHTML = d.recientes.length === 0
+      ? '<tr><td colspan="5" class="empty">Sin registros</td></tr>'
+      : d.recientes.map(r => `
+        <tr>
+          <td><strong>${r.nombreProducto}</strong></td>
+          <td><span class="badge badge-aji">${r.nombre_categoria}</span></td>
+          <td>${r.pesoCantidad} ${r.UnidadMedida}</td>
+          <td>${r.dueno}</td>
+          <td class="recent-row-date">${fmtDate(r.fechaEntrada)}</td>
+        </tr>`).join('');
+  } catch { toast('Error al cargar el dashboard', 'error'); }
+}
+
+async function loadIngresos() {
+  const tbody = document.getElementById('ingresos-tbody');
+  tbody.innerHTML = '<tr><td colspan="7" class="empty"><div class="spinner"></div></td></tr>';
+  try {
+    const rows = await fetch(API + '/ingresos').then(r => r.json());
+    tbody.innerHTML = rows.length === 0
+      ? '<tr><td colspan="7" class="empty">Sin registros</td></tr>'
+      : rows.map(r => `
+        <tr>
+          <td style="color:var(--muted2);font-size:12px">#${r.idIngreso}</td>
+          <td><strong>${r.nombreProducto}</strong></td>
+          <td><span class="badge badge-aji">${r.nombre_categoria}</span></td>
+          <td>${r.pesoCantidad} ${r.UnidadMedida}</td>
+          <td>${r.proveedor}</td>
+          <td class="recent-row-date">${fmtDate(r.fechaEntrada)}</td>
+          <td><div class="actions">
+            <button class="btn-icon" onclick='editIngreso(${JSON.stringify(r)})'>✏️</button>
+            <button class="btn-icon danger" onclick="deleteRecord('ingresos',${r.idIngreso},loadIngresos)">🗑</button>
+          </div></td>
+        </tr>`).join('');
+  } catch(e) { toast('Error al cargar ingresos: ' + e.message, 'error'); }
+}
+
+async function loadDuenos() {
+  const tbody = document.getElementById('duenos-tbody');
+  tbody.innerHTML = '<tr><td colspan="5" class="empty"><div class="spinner"></div></td></tr>';
+  try {
+    const rows = await fetch(API + '/duenos').then(r => r.json());
+    cache.duenos = rows;
+    tbody.innerHTML = rows.length === 0
+      ? '<tr><td colspan="5" class="empty">Sin registros</td></tr>'
+      : rows.map(r => `
+        <tr>
+          <td style="color:var(--muted2);font-size:12px">#${r.idDueno}</td>
+          <td><strong>${r.nombre_completo}</strong></td>
+          <td><span class="badge badge-oro">${r.numero_puesto}</span></td>
+          <td>${r.nombre_sector || '<span style="color:var(--muted2)">—</span>'}</td>
+          <td><div class="actions">
+            <button class="btn-icon" onclick='editDueno(${JSON.stringify(r)})'>✏️</button>
+            <button class="btn-icon danger" onclick="deleteRecord('duenos',${r.idDueno},loadDuenos)">🗑</button>
+          </div></td>
+        </tr>`).join('');
+  } catch(e) { toast('Error: ' + e.message, 'error'); }
+}
+
+async function loadProveedores() {
+  const tbody = document.getElementById('proveedores-tbody');
+  tbody.innerHTML = '<tr><td colspan="6" class="empty"><div class="spinner"></div></td></tr>';
+  try {
+    const rows = await fetch(API + '/proveedores').then(r => r.json());
+    cache.proveedores = rows;
+    tbody.innerHTML = rows.length === 0
+      ? '<tr><td colspan="6" class="empty">Sin registros</td></tr>'
+      : rows.map(r => `
+        <tr>
+          <td style="color:var(--muted2);font-size:12px">#${r.idProveedor}</td>
+          <td><strong>${r.nombre_proveedor}</strong></td>
+          <td>${r.celular || '—'}</td>
+          <td>${r.placa_vehiculo ? `<span class="badge badge-morado">${r.placa_vehiculo}</span>` : '—'}</td>
+          <td>${r.nombreDepartamento || '—'}</td>
+          <td><div class="actions">
+            <button class="btn-icon" onclick='editProveedor(${JSON.stringify(r)})'>✏️</button>
+            <button class="btn-icon danger" onclick="deleteRecord('proveedores',${r.idProveedor},loadProveedores)">🗑</button>
+          </div></td>
+        </tr>`).join('');
+  } catch(e) { toast('Error: ' + e.message, 'error'); }
+}
+
+async function loadCategorias() {
+  const tbody = document.getElementById('categorias-tbody');
+  try {
+    const rows = await fetch(API + '/categorias').then(r => r.json());
+    cache.categorias = rows;
+    tbody.innerHTML = rows.length === 0
+      ? '<tr><td colspan="4" class="empty">Sin registros</td></tr>'
+      : rows.map(r => `
+        <tr>
+          <td style="color:var(--muted2);font-size:12px">#${r.idCategoria}</td>
+          <td><span class="badge badge-verde">${r.nombre_categoria}</span></td>
+          <td>${r.descripcion || '<span style="color:var(--muted2)">—</span>'}</td>
+          <td><div class="actions">
+            <button class="btn-icon" onclick='editCategoria(${JSON.stringify(r)})'>✏️</button>
+            <button class="btn-icon danger" onclick="deleteRecord('categorias',${r.idCategoria},loadCategorias)">🗑</button>
+          </div></td>
+        </tr>`).join('');
+  } catch(e) { toast('Error: ' + e.message, 'error'); }
+}
+
+async function loadSectores() {
+  const tbody = document.getElementById('sectores-tbody');
+
+  try {
+    const rows = await fetch(API + '/sectores').then(r => r.json());
+
+    tbody.innerHTML = rows.length === 0
+      ? '<tr><td colspan="4" class="empty">Sin registros</td></tr>'
+      : rows.map(r => `
+        <tr>
+          <td style="color:var(--muted2);font-size:12px">#${r.idSector}</td>
+          <td><strong>${r.nombre_sector}</strong></td>
+          <td>${r.descripcion || '—'}</td>
+          <td>
+            <div class="actions">
+              <button class="btn-icon" onclick='editSector(${JSON.stringify(r)})'>✏️</button>
+              <button class="btn-icon danger" onclick="deleteRecord('sectores',${r.idSector},loadSectores)">🗑</button>
+            </div>
+          </td>
+        </tr>`).join('');
+
+  } catch(e) {
+    toast('Error: ' + e.message, 'error');
+  }
+}
+
+async function loadPersonas() {
+  const tbody = document.getElementById('personas-tbody');
+
+  try {
+    const rows = await fetch(API + '/personas').then(r => r.json());
+
+    tbody.innerHTML = rows.length === 0
+      ? '<tr><td colspan="5" class="empty">Sin registros</td></tr>'
+      : rows.map(r => `
+        <tr>
+          <td style="color:var(--muted2);font-size:12px">#${r.idPersona}</td>
+          <td><strong>${r.nombre_completo}</strong></td>
+          <td>${r.ci || '—'}</td>
+          <td><span class="badge badge-morado">${r.rol}</span></td>
+          <td>${r.telefono || '—'}</td>
+        </tr>
+      `).join('');
+
+  } catch(e) {
+    toast('Error: ' + e.message, 'error');
+  }
+}
+
+async function openModal(type) {
+  editingId = null; currentModal = type;
+  document.getElementById('modal-' + type + '-title').textContent =
+    {ingreso:'Nuevo Ingreso',dueno:'Nuevo Dueño',proveedor:'Nuevo Proveedor',categoria:'Nueva Categoría'}[type];
+  if (type === 'ingreso') await fillSelects();
+  if (type === 'dueno')   await fillSectorSelect();
+  clearForm(type);
+  document.getElementById('modal-' + type).classList.add('open');
+}
+
+function closeModal(type) {
+  document.getElementById('modal-' + type).classList.remove('open');
+  editingId = null;
+}
+
+function clearForm(type) {
+  const ids = { 
+    ingreso:['i-fecha','i-producto','i-cantidad','i-obs'], 
+
+    dueno:[
+      'd-ci',
+      'd-nombres',
+      'd-paterno',
+'d-materno',
+      'd-telefono',
+      'd-puesto'
+    ], 
+
+    proveedor:['p-nombre','p-celular','p-placa'], 
+
+    categoria:['c-nombre','c-desc'],
+
+    sector:['s-nombre','s-desc']
+  };
+
+  (ids[type] || []).forEach(id => { 
+    const el = document.getElementById(id); 
+    if (el) el.value = ''; 
+  });
+
+  if (type === 'ingreso') {
+    document.getElementById('i-fecha').value = new Date().toISOString().split('T')[0];
+  }
+}
+
+async function fillSelects() {
+  const [cats, duenos, provs, puntos] = await Promise.all([
+    fetch(API + '/categorias').then(r => r.json()),
+    fetch(API + '/duenos').then(r => r.json()),
+    fetch(API + '/proveedores').then(r => r.json()),
+    fetch(API + '/puntos').then(r => r.json()),
+  ]);
+
+  fillSelect('i-categoria', cats, 'idCategoria', 'nombre_categoria');
+  fillSelect('i-dueno', duenos, 'idDueno', 'nombre_completo');
+  fillSelect('i-proveedor', provs, 'idProveedor', 'nombre_proveedor');
+  fillSelect('i-punto', puntos, 'idPunto', 'nombre_punto');
+}
+
+async function fillSectorSelect() {
+  const s = await fetch(API+'/sectores').then(r=>r.json());
+  fillSelect('d-sector',s,'idSector','nombre_sector',true);
+}
+
+function fillSelect(id,data,valKey,labelKey,addEmpty=false) {
+  const sel = document.getElementById(id);
+  if (!sel) return;
+  sel.innerHTML = (addEmpty ? '<option value="">— Sin sector —</option>' : '') +
+    data.map(d => `<option value="${d[valKey]}">${d[labelKey]}</option>`).join('');
+}
+
+function editIngreso(r) {
+  editingId = r.idIngreso;
+  openModal('ingreso').then(() => {
+    document.getElementById('modal-ingreso-title').textContent = 'Editar Ingreso';
+    document.getElementById('i-producto').value = r.nombreProducto;
+    document.getElementById('i-cantidad').value = r.pesoCantidad;
+    document.getElementById('i-unidad').value   = r.UnidadMedida;
+    document.getElementById('i-fecha').value    = r.fechaEntrada?.split('T')[0];
+    document.getElementById('i-obs').value      = r.observaciones;
+  });
+}
+
+async function saveIngreso() {
+
+  if (!validarTexto('i-producto', 'Ingrese el nombre del producto')) return;
+
+  if (numeroMenorIgualCero('i-cantidad')) {
+    toast('La cantidad debe ser mayor a 0', 'error');
+    return;
+  }
+
+  if (!validarSelect('i-categoria', 'Seleccione una categoría')) return;
+
+  if (!validarSelect('i-dueno', 'Seleccione un dueño')) return;
+
+  if (!validarSelect('i-proveedor', 'Seleccione un proveedor')) return;
+
+  if (!validarSelect('i-punto', 'Seleccione un punto de control')) return;
+
+ 
+
+  if (!validarTexto('i-fecha', 'Seleccione una fecha')) return;
+
+
+  const body = {
+    nombreProducto:document.getElementById('i-producto').value,
+    pesoCantidad:document.getElementById('i-cantidad').value,
+    UnidadMedida:document.getElementById('i-unidad').value,
+    fechaEntrada:document.getElementById('i-fecha').value,
+    observaciones:document.getElementById('i-obs').value,
+    categorias_idCategoria:document.getElementById('i-categoria').value,
+    dueno_puesto_idDueno:document.getElementById('i-dueno').value,
+    proveedores_idProveedor:document.getElementById('i-proveedor').value,
+    punto_control_idPunto:document.getElementById('i-punto').value,
+    usuarios_idUsuario: JSON.parse(localStorage.getItem('adminUser')).idAdministrador,
+  };
+
+  await saveRecord('ingresos',body,editingId,loadIngresos,'ingreso');
+}
+
+function editDueno(r) {
+  openModal('dueno').then(() => {
+    editingId = r.idDueno;
+    document.getElementById('modal-dueno-title').textContent = 'Editar Dueño';
+
+    document.getElementById('d-ci').value      = r.ci || '';
+    document.getElementById('d-nombres').value  = r.nombres || '';
+    
+    document.getElementById('d-paterno').value  = r.primerApellido || '';
+    document.getElementById('d-materno').value  = r.segundoApellido || '';
+
+    document.getElementById('d-puesto').value   = r.numero_puesto || '';
+    document.getElementById('d-sector').value   = r.idSector || '';
+  });
+}
+
+async function saveDueno() {
+  if (!validarTexto('d-ci', 'Ingrese el CI')) return;
+  if (!validarTexto('d-nombres', 'Ingrese el nombre')) return;
+  if (!validarTexto('d-paterno', 'Ingrese el primer apellido')) return;
+  if (!validarTexto('d-puesto', 'Ingrese el número de puesto')) return;
+
+  const body = {
+    ci: document.getElementById('d-ci').value,
+    nombres: document.getElementById('d-nombres').value,
+    primerApellido: document.getElementById('d-paterno').value,
+    segundoApellido: document.getElementById('d-materno').value,
+    telefono: document.getElementById('d-telefono').value,
+    numero_puesto: document.getElementById('d-puesto').value,
+    idSector: document.getElementById('d-sector').value || null
+  };
+
+  await saveRecord('duenos', body, editingId, loadDuenos, 'dueno');
+}
+
+
+function editProveedor(r) {
+  openModal('proveedor').then(() => {
+    editingId = r.idProveedor;
+    document.getElementById('modal-proveedor-title').textContent = 'Editar Proveedor';
+    document.getElementById('p-nombre').value = r.nombre_proveedor;
+    document.getElementById('p-celular').value= r.celular || '';
+    document.getElementById('p-placa').value  = r.placa_vehiculo || '';
+  });
+}
+
+async function saveProveedor() {
+
+
+
+  if (!validarTexto('p-nombre', 'Ingrese el nombre del proveedor')) return;
+
+const celular = document.getElementById('p-celular').value.trim();
+if (celular !== '' && celular.length < 7) {
+  toast('El celular debe tener al menos 7 dígitos', 'error');
+  return;
+}
+  const body = { nombre_proveedor:document.getElementById('p-nombre').value, celular:document.getElementById('p-celular').value, placa_vehiculo:document.getElementById('p-placa').value };
+  await saveRecord('proveedores',body,editingId,loadProveedores,'proveedor');
+}
+
+function editCategoria(r) {
+  openModal('categoria').then(() => {
+    editingId = r.idCategoria;
+    document.getElementById('modal-categoria-title').textContent = 'Editar Categoría';
+    document.getElementById('c-nombre').value= r.nombre_categoria;
+    document.getElementById('c-desc').value  = r.descripcion || '';
+  });
+}
+
+async function saveCategoria() {
+
+
+
+
+
+
+  if (!validarTexto('c-nombre', 'Ingrese el nombre de la categoría')) return;
+  const body = { nombre_categoria:document.getElementById('c-nombre').value, descripcion:document.getElementById('c-desc').value };
+  await saveRecord('categorias',body,editingId,loadCategorias,'categoria');
+}
+
+
+
+function editSector(r) {
+  openModal('sector').then(() => {
+    editingId = r.idSector;
+    document.getElementById('modal-sector-title').textContent = 'Editar Sector';
+    document.getElementById('s-nombre').value = r.nombre_sector;
+    document.getElementById('s-desc').value = r.descripcion || '';
+  });
+}
+
+async function saveSector() {
+  if (!validarTexto('s-nombre', 'Ingrese el nombre del sector')) return;
+
+  const body = {
+    nombre_sector: document.getElementById('s-nombre').value,
+    descripcion: document.getElementById('s-desc').value
+  };
+
+  await saveRecord('sectores', body, editingId, loadSectores, 'sector');
+}
+
+
+
+async function saveRecord(endpoint,body,id,reloadFn,modalKey) {
+  try {
+    const url = id ? `${API}/${endpoint}/${id}` : `${API}/${endpoint}`;
+    const method = id ? 'PUT' : 'POST';
+    const r = await fetch(url,{method,headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const data = await r.json();
+    if (data.error) throw new Error(data.error);
+    toast(id ? 'Registro actualizado ✓' : 'Registro guardado ✓','success');
+    closeModal(modalKey);
+    reloadFn();
+  } catch(e) { toast('Error: ' + e.message,'error'); }
+}
+
+async function deleteRecord(endpoint,id,reloadFn) {
+  if (!confirm('¿Eliminar este registro?')) return;
+  try {
+    const r = await fetch(`${API}/${endpoint}/${id}`,{method:'DELETE'});
+    const data = await r.json();
+    if (data.error) throw new Error(data.error);
+    toast('Registro eliminado','success');
+    reloadFn();
+  } catch(e) { toast('Error: ' + e.message,'error'); }
+}
+
+function filterTable(tbodyId,query) {
+  const q = query.toLowerCase();
+  document.querySelectorAll('#' + tbodyId + ' tr').forEach(tr => {
+    tr.style.display = tr.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+document.querySelectorAll('.modal-overlay').forEach(ov => {
+  ov.addEventListener('click', e => {
+    if (e.target === ov) closeModal(ov.id.replace('modal-',''));
+  });
+});
+
+function fmtDate(d) {
+  if (!d) return '—';
+  return new Date(d).toLocaleDateString('es-BO',{day:'2-digit',month:'short',year:'numeric'});
+}
+
+checkConnection();
+setInterval(checkConnection,30000);
+loadDashboard();
+
+function logout(){
+  localStorage.removeItem('adminAuth');
+  window.location.href = 'inicio.html';
+}
+
+
+
+</script>
+</body>
+</html>
