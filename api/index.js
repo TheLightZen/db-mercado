@@ -29,7 +29,17 @@ app.get('/debug', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+  const filePath = path.join(__dirname, '..', 'public', 'index.html');
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      console.error('Error sirviendo index.html:', err);
+      res.status(err.statusCode || 500).json({
+        errorSendFile: err.message,
+        code: err.code,
+        filePath
+      });
+    }
+  });
 });
 app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'login.html'));
