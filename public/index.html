@@ -9,38 +9,42 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
 :root {
-
-  --aji:        #c0392b;
+  /* Paleta paceña: tierra, ají, chicha, aguayo */
+  --aji:        #c0392b;   /* rojo ají */
   --aji-dark:   #96281b;
   --aji-light:  #f5b7b1;
-  --chicha:     #a04000;
+  --chicha:     #a04000;   /* café chicha */
   --chicha-d:   #784212;
-  --oro:        #f39c12;
+  --oro:        #f39c12;   /* amarillo quinua / aguayo */
   --oro-light:  #fdebd0;
-  --verde:      #1e8449;
+  --verde:      #1e8449;   /* verde coca */
   --verde-light:#d5f5e3;
-  --morado:     #6c3483;
+  --morado:     #6c3483;   /* morado aguayo */
   --morado-l:   #e8daef;
-  --tierra:     #6e2f1a;
-  --crema:      #fdf6e3;
+  --tierra:     #6e2f1a;   /* tierra paceña */
+  --crema:      #fdf6e3;   /* crema hoja de coca */
   --crema2:     #fef9f0;
   --borde:      #e8c99a;
   --text:       #2c1503;
   --muted:      #7d5134;
   --muted2:     #a0785a;
-  --sidebar-bg: #3b0f0f;
+  --sidebar-bg: #3b0f0f;   /* guindo oscuro */
   --sidebar2:   #4e1414;
   --sans: 'Source Sans 3', sans-serif;
   --display: 'Playfair Display', serif;
   --r: 12px;
   --r-sm: 8px;
+  --sidebar-w: 230px;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
 body{background:var(--crema);color:var(--text);font-family:var(--sans);font-size:14px;min-height:100vh;display:flex}
 
+/* ── Patrón de fondo aguayo ── */
 body::before{
   content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   background-image:
@@ -48,15 +52,34 @@ body::before{
     repeating-linear-gradient(0deg,rgba(243,156,18,.04) 0px,rgba(243,156,18,.04) 2px,transparent 2px,transparent 32px);
 }
 
+/* ══════════ OVERLAY PARA SIDEBAR MÓVIL ══════════ */
+.sidebar-overlay{
+  display:none;position:fixed;inset:0;background:rgba(30,10,5,.5);
+  z-index:9;
+}
+.sidebar-overlay.open{display:block}
+
+/* ══════════ BOTÓN HAMBURGUESA (móvil) ══════════ */
+.mobile-topbar{display:none}
+.hamburger{
+  background:var(--sidebar-bg);border:1.5px solid var(--aji);color:#fde8c8;
+  border-radius:var(--r-sm);width:38px;height:38px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
+}
+.hamburger svg{width:18px;height:18px}
+
+/* ══════════ SIDEBAR ══════════ */
 aside{
-  width:230px;min-height:100vh;background:var(--sidebar-bg);
+  width:var(--sidebar-w);min-height:100vh;background:var(--sidebar-bg);
   border-right:3px solid var(--aji);
   display:flex;flex-direction:column;
   position:fixed;top:0;left:0;bottom:0;z-index:10;
+  transition:transform .25s ease;
 }
 
+/* Franja decorativa aguayo arriba */
 aside::before{
-  content:'';display:block;height:6px;
+  content:'';display:block;height:6px;flex-shrink:0;
   background:repeating-linear-gradient(90deg,
     var(--aji) 0,var(--aji) 14px,
     var(--oro) 14px,var(--oro) 28px,
@@ -72,54 +95,35 @@ aside::before{
 .logo-top{
   display:flex;
   align-items:center;
+  justify-content:space-between;
 }
 
 .logo h1{
   font-family:var(--display);
-
-  font-size:31px;
-
+  font-size:19px;
   font-weight:700;
-
   color:#fff;
-
-  line-height:1;
-
+  line-height:1.1;
   letter-spacing:.3px;
 }
 
 .logo span{
   display:block;
-
   margin-top:10px;
-
   font-size:11px;
-
   color:#f5b7b1;
-
   letter-spacing:3px;
-
   text-transform:uppercase;
-}
-
-.logo h1{font-family:var(--display);font-size:19px;font-weight:700;color:#fff;line-height:1.1}
-.logo span{
-  display:block;
-
-  margin-top:10px;
-
-  font-size:11px;
-
-  color:#f5b7b1;
-
-  letter-spacing:3px;
-
-  text-transform:uppercase;
-
   text-align:center;
 }
 
-nav{flex:1;padding:10px 0}
+.sidebar-close{
+  display:none;background:none;border:none;color:#f5b7b1;font-size:20px;
+  cursor:pointer;line-height:1;padding:2px 6px;border-radius:6px;
+}
+.sidebar-close:hover{background:rgba(192,57,43,.25);color:#fff}
+
+nav{flex:1;padding:10px 0;overflow-y:auto}
 .nav-section{
   padding:10px 18px 4px;
   font-size:9.5px;color:rgba(253,198,154,.6);letter-spacing:2px;text-transform:uppercase;font-weight:700
@@ -141,6 +145,7 @@ nav{flex:1;padding:10px 0}
 }
 .nav-item svg{width:16px;height:16px;flex-shrink:0}
 
+/* Franja decorativa abajo */
 .sidebar-footer{
   padding:12px 18px 14px;
   border-top:1px solid rgba(255,255,255,.08);
@@ -153,15 +158,18 @@ nav{flex:1;padding:10px 0}
 @keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
 .status-text{font-size:11px;color:#f0c8a0}
 
-main{margin-left:230px;flex:1;padding:30px 36px;min-height:100vh;position:relative;z-index:1}
+/* ══════════ MAIN ══════════ */
+main{margin-left:var(--sidebar-w);flex:1;padding:30px 36px;min-height:100vh;position:relative;z-index:1;max-width:100%;overflow-x:hidden}
 
 .page{display:none;animation:fadeIn .25s ease}
 .page.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
+/* ── Encabezado de página ── */
 .page-header{
   display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;
   padding-bottom:20px;border-bottom:2px solid var(--borde);position:relative;
+  flex-wrap:wrap;gap:14px;
 }
 .page-header::after{
   content:'';position:absolute;bottom:-2px;left:0;width:60px;height:2px;background:var(--aji);
@@ -169,20 +177,24 @@ main{margin-left:230px;flex:1;padding:30px 36px;min-height:100vh;position:relati
 .page-header h2{font-family:var(--display);font-size:26px;font-weight:700;color:var(--tierra);line-height:1.1}
 .page-header p{color:var(--muted2);font-size:13px;margin-top:4px}
 
+/* ── Stats ── */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
 .stat-card{
   background:#fff;border:1.5px solid var(--borde);border-radius:var(--r);
   padding:20px 18px;position:relative;overflow:hidden;
   transition:transform .2s,box-shadow .2s;
+  min-width:0;
 }
 .stat-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(110,47,26,.12)}
 
+/* Barra superior de color por categoría */
 .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
 .stat-card:nth-child(1)::before{background:var(--aji)}
 .stat-card:nth-child(2)::before{background:var(--verde)}
 .stat-card:nth-child(3)::before{background:var(--oro)}
 .stat-card:nth-child(4)::before{background:var(--morado)}
 
+/* Patrón decorativo esquina */
 .stat-card::after{
   content:'';position:absolute;bottom:-8px;right:-8px;
   width:56px;height:56px;border-radius:50%;
@@ -190,16 +202,18 @@ main{margin-left:230px;flex:1;padding:30px 36px;min-height:100vh;position:relati
 }
 
 .stat-label{font-size:10px;color:var(--muted2);letter-spacing:1.5px;text-transform:uppercase;font-weight:600;margin-bottom:10px}
-.stat-value{font-family:var(--display);font-size:38px;font-weight:900;color:var(--tierra);line-height:1}
+.stat-value{font-family:var(--display);font-size:38px;font-weight:900;color:var(--tierra);line-height:1;word-break:break-word}
 .stat-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);opacity:.08}
 .stat-icon svg{width:52px;height:52px}
 
+/* ── Tarjeta de tabla ── */
 .table-card{background:#fff;border:1.5px solid var(--borde);border-radius:var(--r);overflow:hidden}
 .table-toolbar{
   display:flex;align-items:center;justify-content:space-between;
   padding:14px 20px;
   background:linear-gradient(to right,#fff8ed,#fff);
   border-bottom:1.5px solid var(--borde);
+  flex-wrap:wrap;gap:12px;
 }
 .table-toolbar h3{
   font-family:var(--display);font-size:15px;font-weight:700;color:var(--tierra);
@@ -209,7 +223,7 @@ main{margin-left:230px;flex:1;padding:30px 36px;min-height:100vh;position:relati
   content:'';display:inline-block;width:10px;height:10px;
   background:var(--aji);border-radius:50%;flex-shrink:0;
 }
-.toolbar-actions{display:flex;gap:10px;align-items:center}
+.toolbar-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 
 .search-box{
   display:flex;align-items:center;gap:8px;
@@ -217,9 +231,12 @@ main{margin-left:230px;flex:1;padding:30px 36px;min-height:100vh;position:relati
   padding:6px 12px;transition:border-color .15s;
 }
 .search-box:focus-within{border-color:var(--aji)}
-.search-box svg{width:14px;height:14px;color:var(--muted2)}
+.search-box svg{width:14px;height:14px;color:var(--muted2);flex-shrink:0}
 .search-box input{background:none;border:none;outline:none;color:var(--text);font-size:13px;width:150px;font-family:var(--sans)}
 .search-box input::placeholder{color:var(--muted2)}
+
+/* Contenedor con scroll horizontal para tablas en pantallas chicas */
+.table-scroll{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
 
 table{width:100%;border-collapse:collapse}
 th{
@@ -227,22 +244,26 @@ th{
   padding:9px 16px;text-align:left;
   font-size:10.5px;color:#f5c6a0;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;
   border-bottom:2px solid var(--aji-dark);
+  white-space:nowrap;
 }
 td{padding:11px 16px;border-bottom:1px solid #f5e8d3;font-size:13px;color:var(--text)}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:#fef6ea}
 
-.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.3px}
+/* ── Badges ── */
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.3px;white-space:nowrap}
 .badge-aji    {background:#fde8e6;color:#8b1a0d}
 .badge-verde  {background:#d5f5e3;color:#0e5a28}
 .badge-oro    {background:#fef0cc;color:#7d4e00}
 .badge-morado {background:#ede0f5;color:#4a1466}
 .badge-chicha {background:#f9ddd0;color:#6b2a0f}
 
+/* ── Botones ── */
 .btn{
   display:inline-flex;align-items:center;gap:7px;
   padding:8px 18px;border-radius:var(--r-sm);font-size:13px;font-weight:600;
   cursor:pointer;transition:all .15s;border:none;font-family:var(--sans);letter-spacing:.2px;
+  white-space:nowrap;
 }
 .btn-primary{background:var(--aji);color:#fff;box-shadow:0 2px 8px rgba(192,57,43,.3)}
 .btn-primary:hover{background:var(--aji-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(192,57,43,.35)}
@@ -257,19 +278,21 @@ tr:hover td{background:#fef6ea}
 }
 .btn-icon:hover{border-color:var(--chicha);color:var(--chicha);background:#fdf0e0}
 .btn-icon.danger:hover{border-color:var(--aji);color:var(--aji);background:#fde8e6}
-.actions{display:flex;gap:6px}
+.actions{display:flex;gap:6px;flex-wrap:wrap}
 
+/* ── Modal ── */
 .modal-overlay{
   display:none;position:fixed;inset:0;background:rgba(30,10,5,.72);
   backdrop-filter:blur(4px);z-index:100;align-items:center;justify-content:center;
+  padding:16px;
 }
 .modal-overlay.open{display:flex}
 .modal{
   background:#fff;border:2px solid var(--borde);border-radius:var(--r);
-  width:560px;max-width:95vw;max-height:90vh;overflow-y:auto;
+  width:560px;max-width:100%;max-height:90vh;overflow-y:auto;
   animation:slideUp .22s ease;box-shadow:0 20px 60px rgba(110,47,26,.2);
 }
-
+/* Franja aguayo modal */
 .modal::before{
   content:'';display:block;height:5px;
   background:repeating-linear-gradient(90deg,
@@ -287,11 +310,12 @@ tr:hover td{background:#fef6ea}
 .modal-close{background:none;border:none;color:var(--muted2);cursor:pointer;font-size:22px;line-height:1;padding:2px 6px;border-radius:6px;transition:all .15s}
 .modal-close:hover{background:#fde8e6;color:var(--aji)}
 .modal-body{padding:22px 24px}
-.modal-footer{padding:14px 24px;border-top:1.5px solid var(--borde);display:flex;justify-content:flex-end;gap:10px}
+.modal-footer{padding:14px 24px;border-top:1.5px solid var(--borde);display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap}
 
+/* ── Formulario ── */
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .form-grid.cols-1{grid-template-columns:1fr}
-.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group{display:flex;flex-direction:column;gap:5px;min-width:0}
 .form-group.full{grid-column:1/-1}
 label{font-size:11.5px;color:var(--muted);letter-spacing:.5px;font-weight:600;text-transform:uppercase}
 input,select,textarea{
@@ -303,10 +327,11 @@ input:focus,select:focus,textarea:focus{border-color:var(--aji);background:#fff}
 select option{background:#fff}
 textarea{resize:vertical;min-height:72px}
 
+/* ── Toast ── */
 #toast{
   position:fixed;bottom:28px;right:28px;z-index:999;
   background:#fff;border:1.5px solid var(--borde);border-radius:var(--r);
-  padding:13px 18px;font-size:13px;min-width:240px;
+  padding:13px 18px;font-size:13px;min-width:240px;max-width:calc(100vw - 40px);
   display:flex;align-items:center;gap:10px;
   transform:translateY(80px);opacity:0;transition:all .3s;pointer-events:none;
   box-shadow:0 8px 24px rgba(110,47,26,.15);
@@ -318,11 +343,13 @@ textarea{resize:vertical;min-height:72px}
 #toast.success .toast-dot{background:var(--verde)}
 #toast.error .toast-dot{background:var(--aji)}
 
+/* ── Empty/loading ── */
 .empty{padding:48px;text-align:center;color:var(--muted2);font-size:13px}
 .spinner{display:inline-block;width:20px;height:20px;border:2px solid var(--borde);border-top-color:var(--aji);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .recent-row-date{color:var(--muted2);font-size:12px}
 
+/* ══════════ DASHBOARD ESPECIAL ══════════ */
 .dash-welcome{
   background:linear-gradient(135deg,var(--sidebar-bg),var(--chicha-d));
   border-radius:var(--r);padding:24px 28px;margin-bottom:28px;
@@ -343,6 +370,7 @@ textarea{resize:vertical;min-height:72px}
 .dash-welcome h3{font-family:var(--display);font-size:21px;color:#fff;font-weight:700;margin-bottom:5px}
 .dash-welcome p{color:#f5c6a0;font-size:13px}
 
+/* ══════════ DECORACIÓN LATERAL AGUAYO ══════════ */
 .aguayo-stripe{
   height:4px;width:100%;margin-bottom:20px;border-radius:2px;
   background:repeating-linear-gradient(90deg,
@@ -350,15 +378,107 @@ textarea{resize:vertical;min-height:72px}
     var(--verde) 16px,var(--verde) 24px,var(--morado) 24px,var(--morado) 32px
   );
 }
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE — breakpoints
+   Desktop grande: por defecto (arriba)
+   Tablet: <=1024px
+   Tablet chica / móvil grande: <=768px
+   Móvil: <=480px
+   ═══════════════════════════════════════════════════ */
+
+/* ── Tablet (≤1024px): sidebar más angosto, stats en 2 columnas ── */
+@media (max-width:1024px){
+  :root{--sidebar-w:200px}
+  main{padding:26px 24px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .form-grid{grid-template-columns:1fr 1fr}
+}
+
+/* ── Tablet chica / móvil (≤768px): sidebar deslizable off-canvas ── */
+@media (max-width:768px){
+  aside{
+    transform:translateX(-100%);
+    width:250px;
+    --sidebar-w:250px;
+    box-shadow:4px 0 24px rgba(0,0,0,.25);
+  }
+  aside.open{transform:translateX(0)}
+  .sidebar-close{display:block}
+
+  main{margin-left:0;padding:16px 16px 30px}
+
+  .mobile-topbar{
+    display:flex;align-items:center;gap:12px;
+    margin:0 -16px 20px;padding:12px 16px;
+    background:#fff;border-bottom:2px solid var(--borde);
+    position:sticky;top:0;z-index:8;
+  }
+  .mobile-topbar .mobile-title{
+    font-family:var(--display);font-weight:700;color:var(--tierra);font-size:16px;
+  }
+
+  .page-header{flex-direction:column;align-items:flex-start}
+  .page-header h2{font-size:22px}
+
+  .stats{grid-template-columns:repeat(2,1fr);gap:12px}
+  .stat-card{padding:16px 14px}
+  .stat-value{font-size:30px}
+  .stat-icon{display:none}
+
+  .table-toolbar{flex-direction:column;align-items:stretch}
+  .table-toolbar h3{font-size:14px}
+  .toolbar-actions{width:100%;justify-content:space-between}
+  .search-box{flex:1;min-width:0}
+  .search-box input{width:100%}
+
+  .table-scroll{border-top:1px solid var(--borde)}
+  table{min-width:640px}
+
+  .form-grid{grid-template-columns:1fr}
+
+  .modal{width:100%;border-radius:var(--r) var(--r) 0 0;max-height:92vh}
+  .modal-overlay{align-items:flex-end;padding:0}
+  .modal-overlay .modal{animation:slideUpMobile .22s ease}
+  @keyframes slideUpMobile{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+  .modal-body{padding:18px}
+  .modal-header{padding:16px 18px 12px}
+  .modal-footer{padding:12px 18px}
+
+  #toast{
+    left:16px;right:16px;bottom:16px;min-width:0;max-width:none;
+  }
+
+  .dash-welcome{padding:20px}
+  .dash-welcome h3{font-size:18px}
+}
+
+/* ── Móvil pequeño (≤480px) ── */
+@media (max-width:480px){
+  body{font-size:13px}
+  .stats{grid-template-columns:1fr}
+  .stat-value{font-size:28px}
+  .page-header h2{font-size:20px}
+  .btn{padding:8px 14px;font-size:12.5px}
+  .toolbar-actions{flex-direction:column;align-items:stretch}
+  .toolbar-actions .btn,.toolbar-actions .search-box{width:100%}
+  .modal-footer{flex-direction:column-reverse}
+  .modal-footer .btn{width:100%;justify-content:center}
+}
 </style>
+
 </head>
 <body>
 
-<aside>
+<!-- ═══════════════════════════════ SIDEBAR ═══════════════════════════════ -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<aside id="sidebar">
   <div class="logo">
-
+    <div class="logo-top">
       <h1>Mercado<br>Popular</h1>
-
+      <button class="sidebar-close" id="btnCerrarSidebar" aria-label="Cerrar menú">&times;</button>
+    </div>
     <span>Sistema de gestión</span>
   </div>
   <nav>
@@ -407,8 +527,19 @@ textarea{resize:vertical;min-height:72px}
 </div>
 </aside>
 
+<!-- ═══════════════════════════════ MAIN ═════════════════════════════════ -->
 <main>
 
+  <div class="mobile-topbar">
+    <button class="hamburger" id="btnAbrirSidebar" aria-label="Abrir menú">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" d="M3 6h18M3 12h18M3 18h18"/>
+      </svg>
+    </button>
+    <span class="mobile-title">Mercado Popular</span>
+  </div>
+
+  <!-- DASHBOARD -->
   <section class="page active" id="page-dashboard">
     <div class="page-header">
       <div>
@@ -447,13 +578,16 @@ textarea{resize:vertical;min-height:72px}
 
     <div class="table-card">
       <div class="table-toolbar"><h3>Últimos ingresos de mercancía</h3></div>
+      <div class="table-scroll">
       <table>
         <thead><tr><th>Producto</th><th>Categoría</th><th>Cantidad</th><th>Dueño</th><th>Fecha</th></tr></thead>
         <tbody id="recent-tbody"><tr><td colspan="5" class="empty">Cargando…</td></tr></tbody>
       </table>
+      </div>
     </div>
   </section>
 
+  <!-- INGRESOS -->
   <section class="page" id="page-ingresos">
     <div class="page-header">
       <div><h2>Ingreso de Mercancía</h2><p>Registra y gestiona los ingresos al mercado</p></div>
@@ -469,13 +603,16 @@ textarea{resize:vertical;min-height:72px}
           <div class="search-box"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg><input id="search-ingresos" placeholder="Buscar producto…" oninput="filterTable('ingresos-tbody',this.value)"/></div>
         </div>
       </div>
+      <div class="table-scroll">
       <table>
         <thead><tr><th>ID</th><th>Producto</th><th>Categoría</th><th>Cantidad</th><th>Proveedor</th><th>Fecha</th><th>Acciones</th></tr></thead>
         <tbody id="ingresos-tbody"></tbody>
       </table>
+      </div>
     </div>
   </section>
 
+  <!-- DUEÑOS -->
   <section class="page" id="page-duenos">
     <div class="page-header">
       <div><h2>Dueños de Puesto</h2><p>Administra los propietarios de puestos del mercado</p></div>
@@ -491,13 +628,16 @@ textarea{resize:vertical;min-height:72px}
           <div class="search-box"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg><input placeholder="Buscar…" oninput="filterTable('duenos-tbody',this.value)"/></div>
         </div>
       </div>
+      <div class="table-scroll">
       <table>
         <thead><tr><th>ID</th><th>Nombre</th><th>Puesto</th><th>Sector</th><th>Acciones</th></tr></thead>
         <tbody id="duenos-tbody"></tbody>
       </table>
+      </div>
     </div>
   </section>
 
+  <!-- PROVEEDORES -->
   <section class="page" id="page-proveedores">
     <div class="page-header">
       <div><h2>Proveedores</h2><p>Gestiona los proveedores del mercado</p></div>
@@ -513,13 +653,16 @@ textarea{resize:vertical;min-height:72px}
           <div class="search-box"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg><input placeholder="Buscar…" oninput="filterTable('proveedores-tbody',this.value)"/></div>
         </div>
       </div>
+      <div class="table-scroll">
       <table>
         <thead><tr><th>ID</th><th>Nombre</th><th>Celular</th><th>Placa</th><th>Departamento</th><th>Acciones</th></tr></thead>
         <tbody id="proveedores-tbody"></tbody>
       </table>
+      </div>
     </div>
   </section>
 
+  <!-- CATEGORÍAS -->
   <section class="page" id="page-categorias">
     <div class="page-header">
       <div><h2>Categorías</h2><p>Gestiona las categorías de productos</p></div>
@@ -530,13 +673,16 @@ textarea{resize:vertical;min-height:72px}
     </div>
     <div class="table-card">
       <div class="table-toolbar"><h3>Listado de categorías</h3></div>
+      <div class="table-scroll">
       <table>
         <thead><tr><th>ID</th><th>Nombre</th><th>Descripción</th><th>Acciones</th></tr></thead>
         <tbody id="categorias-tbody"></tbody>
       </table>
+      </div>
     </div>
   </section>
 
+  <!-- SECTORES -->
   <section class="page" id="page-sectores">
     <div class="page-header">
   <div>
@@ -553,6 +699,7 @@ textarea{resize:vertical;min-height:72px}
 </div>
     <div class="table-card">
       <div class="table-toolbar"><h3>Listado de sectores</h3></div>
+      <div class="table-scroll">
       <table>
         <thead>
   <tr>
@@ -564,9 +711,11 @@ textarea{resize:vertical;min-height:72px}
 </thead>
         <tbody id="sectores-tbody"></tbody>
       </table>
+      </div>
     </div>
   </section>
 
+  <!-- PERSONAS -->
   <section class="page" id="page-personas">
     <div class="page-header">
       <div><h2>Directorio de Personas</h2>
@@ -574,6 +723,7 @@ textarea{resize:vertical;min-height:72px}
     </div>
     <div class="table-card">
       <div class="table-toolbar"><h3>Listado de personas</h3></div>
+      <div class="table-scroll">
       <table>
         <thead>
   <tr>
@@ -586,11 +736,15 @@ textarea{resize:vertical;min-height:72px}
 </thead>
         <tbody id="personas-tbody"></tbody>
       </table>
+      </div>
     </div>
   </section>
 
 </main>
 
+<!-- ═══════════════════════════════ MODALES ═══════════════════════════════ -->
+
+<!-- Modal Ingreso -->
 <div class="modal-overlay" id="modal-ingreso">
   <div class="modal">
     <div class="modal-header">
@@ -626,6 +780,7 @@ textarea{resize:vertical;min-height:72px}
   </div>
 </div>
 
+<!-- Modal Dueño -->
 <div class="modal-overlay" id="modal-dueno">
   <div class="modal">
     <div class="modal-header">
@@ -653,6 +808,7 @@ textarea{resize:vertical;min-height:72px}
   </div>
 </div>
 
+<!-- Modal Proveedor -->
 <div class="modal-overlay" id="modal-proveedor">
   <div class="modal">
     <div class="modal-header">
@@ -673,6 +829,7 @@ textarea{resize:vertical;min-height:72px}
   </div>
 </div>
 
+<!-- Modal Categoría -->
 <div class="modal-overlay" id="modal-categoria">
   <div class="modal">
     <div class="modal-header">
@@ -692,6 +849,8 @@ textarea{resize:vertical;min-height:72px}
   </div>
 </div>
 
+
+<!-- Modal Sector -->
 <div class="modal-overlay" id="modal-sector">
   <div class="modal">
     <div class="modal-header">
@@ -720,6 +879,10 @@ textarea{resize:vertical;min-height:72px}
   </div>
 </div>
 
+
+
+
+<!-- Toast -->
 <div id="toast"><div class="toast-dot"></div><span id="toast-msg"></span></div>
 
 <script>
@@ -728,10 +891,14 @@ textarea{resize:vertical;min-height:72px}
   window.location.href = 'login.html';
 }
 
-const API = '/api';
+
+
+const API = 'http://localhost:3001/api';
 let editingId = null;
 let currentModal = null;
 let cache = { categorias:[], duenos:[], proveedores:[], puntos:[], usuarios:[], sectores:[] };
+
+
 
 function campoVacio(id) {
   return document.getElementById(id).value.trim() === '';
@@ -757,6 +924,9 @@ function validarSelect(id, mensaje) {
   return true;
 }
 
+
+
+
 function toast(msg, type='success') {
   const t = document.getElementById('toast');
   document.getElementById('toast-msg').textContent = msg;
@@ -772,8 +942,28 @@ document.querySelectorAll('.nav-item').forEach(item => {
     const page = item.dataset.page;
     document.getElementById('page-' + page).classList.add('active');
     loadPage(page);
+    cerrarSidebar(); // en móvil, al elegir una página se cierra el menú
   });
 });
+
+/* ═══════════════════════ SIDEBAR MÓVIL (hamburguesa) ═══════════════════════ */
+const sidebar        = document.getElementById('sidebar');
+const sidebarOverlay = document.getElementById('sidebarOverlay');
+const btnAbrirSidebar  = document.getElementById('btnAbrirSidebar');
+const btnCerrarSidebar = document.getElementById('btnCerrarSidebar');
+
+function abrirSidebar() {
+  sidebar.classList.add('open');
+  sidebarOverlay.classList.add('open');
+}
+function cerrarSidebar() {
+  sidebar.classList.remove('open');
+  sidebarOverlay.classList.remove('open');
+}
+
+btnAbrirSidebar?.addEventListener('click', abrirSidebar);
+btnCerrarSidebar?.addEventListener('click', cerrarSidebar);
+sidebarOverlay?.addEventListener('click', cerrarSidebar);
 
 async function checkConnection() {
   const dot = document.getElementById('statusDot');
@@ -964,8 +1154,8 @@ function closeModal(type) {
 }
 
 function clearForm(type) {
-  const ids = {
-    ingreso:['i-fecha','i-producto','i-cantidad','i-obs'],
+  const ids = { 
+    ingreso:['i-fecha','i-producto','i-cantidad','i-obs'], 
 
     dueno:[
       'd-ci',
@@ -974,18 +1164,18 @@ function clearForm(type) {
 'd-materno',
       'd-telefono',
       'd-puesto'
-    ],
+    ], 
 
-    proveedor:['p-nombre','p-celular','p-placa'],
+    proveedor:['p-nombre','p-celular','p-placa'], 
 
     categoria:['c-nombre','c-desc'],
 
     sector:['s-nombre','s-desc']
   };
 
-  (ids[type] || []).forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
+  (ids[type] || []).forEach(id => { 
+    const el = document.getElementById(id); 
+    if (el) el.value = ''; 
   });
 
   if (type === 'ingreso') {
@@ -1048,7 +1238,10 @@ async function saveIngreso() {
 
   if (!validarSelect('i-punto', 'Seleccione un punto de control')) return;
 
+ 
+
   if (!validarTexto('i-fecha', 'Seleccione una fecha')) return;
+
 
   const body = {
     nombreProducto:document.getElementById('i-producto').value,
@@ -1073,7 +1266,7 @@ function editDueno(r) {
 
     document.getElementById('d-ci').value      = r.ci || '';
     document.getElementById('d-nombres').value  = r.nombres || '';
-
+    
     document.getElementById('d-paterno').value  = r.primerApellido || '';
     document.getElementById('d-materno').value  = r.segundoApellido || '';
 
@@ -1101,6 +1294,7 @@ async function saveDueno() {
   await saveRecord('duenos', body, editingId, loadDuenos, 'dueno');
 }
 
+
 function editProveedor(r) {
   openModal('proveedor').then(() => {
     editingId = r.idProveedor;
@@ -1112,6 +1306,8 @@ function editProveedor(r) {
 }
 
 async function saveProveedor() {
+
+
 
   if (!validarTexto('p-nombre', 'Ingrese el nombre del proveedor')) return;
 
@@ -1135,10 +1331,17 @@ function editCategoria(r) {
 
 async function saveCategoria() {
 
+
+
+
+
+
   if (!validarTexto('c-nombre', 'Ingrese el nombre de la categoría')) return;
   const body = { nombre_categoria:document.getElementById('c-nombre').value, descripcion:document.getElementById('c-desc').value };
   await saveRecord('categorias',body,editingId,loadCategorias,'categoria');
 }
+
+
 
 function editSector(r) {
   openModal('sector').then(() => {
@@ -1159,6 +1362,8 @@ async function saveSector() {
 
   await saveRecord('sectores', body, editingId, loadSectores, 'sector');
 }
+
+
 
 async function saveRecord(endpoint,body,id,reloadFn,modalKey) {
   try {
@@ -1210,6 +1415,8 @@ function logout(){
   localStorage.removeItem('adminAuth');
   window.location.href = 'inicio.html';
 }
+
+
 
 </script>
 </body>

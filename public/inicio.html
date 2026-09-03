@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Informe Público — Mercado Popular</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
@@ -10,179 +11,278 @@
 
 <style>
 :root {
-  --aji:#c0392b;
-  --aji-dark:#3b0f0f;
-  --oro:#f39c12;
-  --verde:#1e8449;
-  --morado:#6c3483;
-  --crema:#fdf6e3;
-  --borde:#e8c99a;
-  --text:#2c1503;
-  --muted:#7d5134;
-  --display:'Playfair Display', serif;
-  --sans:'Source Sans 3', sans-serif;
+  --aji: #c0392b;
+  --aji-dark: #3b0f0f;
+  --oro: #f39c12;
+  --verde: #1e8449;
+  --morado: #6c3483;
+  --crema: #fdf6e3;
+  --borde: #e8c99a;
+  --text: #2c1503;
+  --muted: #7d5134;
+  --display: 'Playfair Display', serif;
+  --sans: 'Source Sans 3', sans-serif;
 }
 
-*{box-sizing:border-box;margin:0;padding:0}
-
-body{
-  font-family:var(--sans);
-  background:var(--crema);
-  color:var(--text);
-  min-height:100vh;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-.hero{
-  background:linear-gradient(135deg,#3b0f0f,#784212);
-  color:white;
-  padding:50px 70px;
-  position:relative;
+body {
+  font-family: var(--sans);
+  background: var(--crema);
+  color: var(--text);
+  min-height: 100vh;
 }
 
-.hero::before{
-  content:'';
-  position:absolute;
-  top:0;left:0;right:0;height:7px;
-  background:repeating-linear-gradient(90deg,
-    var(--aji) 0,var(--aji) 14px,
-    var(--oro) 14px,var(--oro) 28px,
-    var(--verde) 28px,var(--verde) 42px,
-    var(--morado) 42px,var(--morado) 56px
+/* ══════════ HERO SECTION ══════════ */
+.hero {
+  background: linear-gradient(135deg, #3b0f0f, #784212);
+  color: white;
+  padding: 30px 20px; /* Padding reducido para móviles */
+  position: relative;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 7px;
+  background: repeating-linear-gradient(90deg,
+    var(--aji) 0, var(--aji) 14px,
+    var(--oro) 14px, var(--oro) 28px,
+    var(--verde) 28px, var(--verde) 42px,
+    var(--morado) 42px, var(--morado) 56px
   );
 }
 
-.hero h1{
-  font-family:var(--display);
-  font-size:44px;
-  margin-bottom:10px;
+.hero h1 {
+  font-family: var(--display);
+  font-size: 30px; /* Tamaño adaptativo para móvil */
+  margin-bottom: 10px;
+  line-height: 1.2;
 }
 
-.hero p{
-  color:#f5c6a0;
-  max-width:700px;
-  font-size:17px;
-  line-height:1.5;
+.hero p {
+  color: #f5c6a0;
+  max-width: 700px;
+  font-size: 15px;
+  line-height: 1.5;
 }
 
-.actions{
-  margin-top:25px;
-  display:flex;
-  gap:12px;
+.actions {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column; /* Apilados en móviles */
+  gap: 10px;
 }
 
-.btn{
-  border:none;
-  padding:12px 20px;
-  border-radius:10px;
-  font-weight:700;
-  cursor:pointer;
-  text-decoration:none;
-  font-family:var(--sans);
+.btn {
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: var(--sans);
+  text-align: center;
+  transition: opacity 0.2s ease;
 }
 
-.btn-primary{
-  background:var(--aji);
-  color:white;
+.btn:hover {
+  opacity: 0.9;
 }
 
-.btn-secondary{
-  background:#fff3d6;
-  color:#6e2f1a;
+.btn-primary {
+  background: var(--aji);
+  color: white;
 }
 
-main{
-  padding:32px 70px;
+.btn-secondary {
+  background: #fff3d6;
+  color: #6e2f1a;
 }
 
-.cards{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:18px;
-  margin-bottom:28px;
+/* ══════════ MAIN CONTENT ══════════ */
+main {
+  padding: 20px 16px; /* Ajuste para pantalla pequeña */
 }
 
-.card{
-  background:white;
-  border:1.5px solid var(--borde);
-  border-radius:14px;
-  padding:24px;
-  position:relative;
-  overflow:hidden;
+/* Grilla de Tarjetas (Stats) */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr; /* 1 columna en móvil */
+  gap: 14px;
+  margin-bottom: 24px;
 }
 
-.card::before{
-  content:'';
-  position:absolute;
-  top:0;left:0;right:0;height:4px;
+.card {
+  background: white;
+  border: 1.5px solid var(--borde);
+  border-radius: 14px;
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
 }
 
-.card:nth-child(1)::before{background:var(--aji)}
-.card:nth-child(2)::before{background:var(--verde)}
-.card:nth-child(3)::before{background:var(--oro)}
-.card:nth-child(4)::before{background:var(--morado)}
-
-.card span{
-  font-size:11px;
-  letter-spacing:1.5px;
-  color:var(--muted);
-  text-transform:uppercase;
-  font-weight:700;
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
 }
 
-.card h2{
-  font-family:var(--display);
-  font-size:42px;
-  color:#6e2f1a;
-  margin-top:8px;
+.card:nth-child(1)::before { background: var(--aji); }
+.card:nth-child(2)::before { background: var(--verde); }
+.card:nth-child(3)::before { background: var(--oro); }
+.card:nth-child(4)::before { background: var(--morado); }
+
+.card span {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  text-transform: uppercase;
+  font-weight: 700;
 }
 
-.info-grid{
-  display:grid;
-  grid-template-columns:1.2fr .8fr;
-  gap:22px;
+.card h2 {
+  font-family: var(--display);
+  font-size: 32px;
+  color: #6e2f1a;
+  margin-top: 6px;
 }
 
-.panel{
-  background:white;
-  border:1.5px solid var(--borde);
-  border-radius:14px;
-  padding:26px;
+/* Grilla de Paneles Informativos */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* 1 columna en móvil */
+  gap: 16px;
 }
 
-.panel h2{
-  font-family:var(--display);
-  color:#6e2f1a;
-  margin-bottom:12px;
+.panel {
+  background: white;
+  border: 1.5px solid var(--borde);
+  border-radius: 14px;
+  padding: 20px;
 }
 
-.panel p{
-  color:var(--muted);
-  line-height:1.6;
-  font-size:15px;
+.panel h2 {
+  font-family: var(--display);
+  color: #6e2f1a;
+  font-size: 22px;
+  margin-bottom: 10px;
 }
 
-.mini-list{
-  margin-top:15px;
-  display:grid;
-  gap:10px;
+.panel p {
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 14px;
 }
 
-.item{
-  background:#fff8ed;
-  border-left:5px solid var(--aji);
-  padding:12px;
-  border-radius:8px;
+.mini-list {
+  margin-top: 15px;
+  display: grid;
+  gap: 10px;
 }
 
-.item strong{
-  color:#6e2f1a;
+.item {
+  background: #fff8ed;
+  border-left: 5px solid var(--aji);
+  padding: 12px;
+  border-radius: 8px;
 }
 
-.footer{
-  margin-top:26px;
-  text-align:center;
-  color:var(--muted);
-  font-size:13px;
+.item strong {
+  color: #6e2f1a;
+}
+
+.footer {
+  margin-top: 26px;
+  padding-bottom: 20px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* ══════════ MEDIA QUERIES (ADAPTABILIDAD) ══════════ */
+
+/* Tablets (>= 600px) */
+@media (min-width: 600px) {
+  .hero {
+    padding: 40px 40px;
+  }
+
+  .hero h1 {
+    font-size: 38px;
+  }
+
+  .actions {
+    flex-direction: row; /* Botones uno al lado del otro */
+  }
+
+  .btn {
+    display: inline-block;
+  }
+
+  .cards {
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas */
+    gap: 16px;
+  }
+
+  main {
+    padding: 28px 40px;
+  }
+}
+
+/* Pantallas Grandes / Escritorio (>= 900px) */
+@media (min-width: 900px) {
+  .hero {
+    padding: 50px 70px;
+  }
+
+  .hero h1 {
+    font-size: 44px;
+  }
+
+  .hero p {
+    font-size: 17px;
+  }
+
+  main {
+    padding: 32px 70px;
+  }
+
+  .cards {
+    grid-template-columns: repeat(4, 1fr); /* 4 columnas originales */
+    gap: 18px;
+  }
+
+  .card h2 {
+    font-size: 42px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1.2fr 0.8fr; /* Proporción original en escritorio */
+    gap: 22px;
+  }
+
+  .panel {
+    padding: 26px;
+  }
+
+  .panel h2 {
+    font-size: 26px;
+  }
+
+  .panel p {
+    font-size: 15px;
+  }
 }
 </style>
 </head>
@@ -254,7 +354,7 @@ main{
 </main>
 
 <script>
-const API = '/api';
+const API = 'http://localhost:3001/api';
 
 let dashboardData = null;
 let ingresosData = [];
@@ -301,8 +401,12 @@ async function generarPDF() {
 
   const fecha = new Date().toLocaleDateString('es-BO');
 
+  // ═══════════════ HEADER ═══════════════
+
   doc.setFillColor(59, 15, 15);
   doc.rect(0, 0, 210, 38, 'F');
+
+  // Línea decorativa aguayo
   const colores = [
     [192,57,43],
     [243,156,18],
@@ -321,6 +425,8 @@ async function generarPDF() {
 
     x += 7;
   }
+
+  // Título
   doc.setTextColor(255,255,255);
 
   doc.setFont('helvetica', 'bold');
@@ -332,10 +438,14 @@ async function generarPDF() {
   doc.setTextColor(245,198,160);
 
   doc.text('Sistema de Control e Informe de Mercancías', 15, 29);
+
+  // Fecha
   doc.setTextColor(255,255,255);
   doc.setFontSize(10);
 
   doc.text('Fecha de emisión: ' + fecha, 150, 20);
+
+  // ═══════════════ RESUMEN ═══════════════
 
   doc.setTextColor(44,21,3);
 
@@ -343,6 +453,8 @@ async function generarPDF() {
   doc.setFont('helvetica', 'bold');
 
   doc.text('Resumen General', 15, 55);
+
+  // Cards estadísticas
   const cards = [
     ['Ingresos', dashboardData.stats.ingresos, [192,57,43]],
     ['Proveedores', dashboardData.stats.proveedores, [30,132,73]],
@@ -363,6 +475,8 @@ async function generarPDF() {
     doc.setLineWidth(.8);
 
     doc.roundedRect(startX, 65, 42, 28, 4, 4);
+
+    // barra superior
     doc.setFillColor(color[0], color[1], color[2]);
     doc.roundedRect(startX, 65, 42, 4, 2, 2, 'F');
 
@@ -381,6 +495,8 @@ async function generarPDF() {
 
     startX += 46;
   });
+
+  // ═══════════════ DESCRIPCIÓN ═══════════════
 
   doc.setTextColor(44,21,3);
 
@@ -403,11 +519,17 @@ y trazable del movimiento comercial del mercado.
 
   doc.text(texto, 15, 125);
 
+  // ═══════════════ ÚLTIMOS INGRESOS ═══════════════
+
   doc.setFontSize(18);
   doc.setFont('helvetica', 'bold');
 
   doc.text('Últimos Ingresos Registrados', 15, 165);
+
+  // Tabla
   let y = 178;
+
+  // encabezado
   doc.setFillColor(59,15,15);
   doc.rect(15, y, 180, 10, 'F');
 
@@ -424,6 +546,8 @@ y trazable del movimiento comercial del mercado.
   y += 10;
 
   ingresosData.slice(0,8).forEach((i, index) => {
+
+    // fondo alternado
     if(index % 2 === 0){
       doc.setFillColor(255,248,237);
       doc.rect(15, y, 180, 10, 'F');
@@ -441,6 +565,8 @@ y trazable del movimiento comercial del mercado.
 
     y += 10;
   });
+
+  // ═══════════════ FOOTER ═══════════════
 
   doc.setDrawColor(232,201,154);
   doc.line(15, 280, 195, 280);
@@ -460,6 +586,8 @@ y trazable del movimiento comercial del mercado.
     145,
     287
   );
+
+  // ═══════════════ GUARDAR ═══════════════
 
   doc.save('informe_mercado_popular.pdf');
 }

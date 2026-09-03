@@ -2,160 +2,190 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ingreso Administrativo</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --aji:#c0392b;
-  --oro:#f39c12;
-  --verde:#1e8449;
-  --morado:#6c3483;
-  --crema:#fdf6e3;
-  --text:#2c1503;
-  --muted:#7d5134;
-  --display:'Playfair Display', serif;
-  --sans:'Source Sans 3', sans-serif;
+  :root {
+  --aji: #c0392b;
+  --oro: #f39c12;
+  --verde: #1e8449;
+  --morado: #6c3483;
+  --crema: #fdf6e3;
+  --text: #2c1503;
+  --muted: #7d5134;
+  --display: 'Playfair Display', serif;
+  --sans: 'Source Sans 3', sans-serif;
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-family:var(--sans);
+body {
+  min-height: 100vh;
+  min-height: 100dvh; /* Soporte para alturas dinámicas en navegadores móviles */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--sans);
+  padding: 16px; /* Evita que la tarjeta toque los bordes en celulares */
   background:
-    linear-gradient(rgba(20,8,5,.75),rgba(20,8,5,.75)),
+    linear-gradient(rgba(20,8,5,.75), rgba(20,8,5,.75)),
     url('https://images.unsplash.com/photo-1488459716781-31db52582fe9?q=80&w=1400&auto=format&fit=crop');
-  background-size:cover;
-  background-position:center;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Mantiene fijo el fondo al hacer scroll si la pantalla es corta */
 }
 
-.login-card{
-  width:420px;
-  background:rgba(255,248,237,.97);
-  border-radius:18px;
-  padding:38px;
-  box-shadow:0 20px 60px rgba(0,0,0,.35);
-  border:2px solid rgba(243,156,18,.3);
-  position:relative;
-  overflow:hidden;
+.login-card {
+  width: 100%;
+  max-width: 420px; /* Ancho máximo en escritorio, adaptable en móvil */
+  background: rgba(255, 248, 237, 0.97);
+  border-radius: 18px;
+  padding: 28px 22px; /* Padding reducido para pantallas pequeñas */
+  box-shadow: 0 20px 60px rgba(0,0,0,.35);
+  border: 2px solid rgba(243,156,18,.3);
+  position: relative;
+  overflow: hidden;
 }
 
-.login-card::before{
-  content:'';
-  position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  height:6px;
-  background:repeating-linear-gradient(
+.login-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: repeating-linear-gradient(
     90deg,
-    var(--aji) 0,var(--aji) 18px,
-    var(--oro) 18px,var(--oro) 36px,
-    var(--verde) 36px,var(--verde) 54px,
-    var(--morado) 54px,var(--morado) 72px
+    var(--aji) 0, var(--aji) 18px,
+    var(--oro) 18px, var(--oro) 36px,
+    var(--verde) 36px, var(--verde) 54px,
+    var(--morado) 54px, var(--morado) 72px
   );
 }
 
-.logo{
-  text-align:center;
-  margin-bottom:28px;
+.logo {
+  text-align: center;
+  margin-bottom: 24px;
 }
 
-.logo-icon{
-  font-size:48px;
-  margin-bottom:10px;
+.logo-icon {
+  font-size: 40px; /* Tamaño adaptado para móviles */
+  margin-bottom: 8px;
 }
 
-.logo h1{
-  font-family:var(--display);
-  color:#5a2212;
-  font-size:34px;
-  margin-bottom:4px;
+.logo h1 {
+  font-family: var(--display);
+  color: #5a2212;
+  font-size: 28px; /* Ajuste fluido */
+  margin-bottom: 4px;
+  line-height: 1.2;
 }
 
-.logo p{
-  color:var(--muted);
-  font-size:14px;
+.logo p {
+  color: var(--muted);
+  font-size: 13.5px;
 }
 
-.form-group{
-  margin-bottom:18px;
+.form-group {
+  margin-bottom: 16px;
 }
 
-label{
-  display:block;
-  margin-bottom:7px;
-  font-size:13px;
-  color:#7d5134;
-  font-weight:700;
-  letter-spacing:.5px;
+label {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 12.5px;
+  color: #7d5134;
+  font-weight: 700;
+  letter-spacing: .5px;
 }
 
-input{
-  width:100%;
-  padding:13px 14px;
-  border-radius:10px;
-  border:1.5px solid #e8c99a;
-  background:#fffdf8;
-  font-size:14px;
-  outline:none;
-  transition:.2s;
+input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1.5px solid #e8c99a;
+  background: #fffdf8;
+  font-size: 16px; /* 16px evita el zoom automático incómodo en iPhones */
+  outline: none;
+  transition: .2s;
+  font-family: var(--sans);
 }
 
-input:focus{
-  border-color:var(--aji);
+input:focus {
+  border-color: var(--aji);
 }
 
-.btn{
-  width:100%;
-  border:none;
-  background:var(--aji);
-  color:white;
-  padding:14px;
-  border-radius:10px;
-  font-weight:700;
-  font-size:15px;
-  cursor:pointer;
-  transition:.2s;
+.btn {
+  width: 100%;
+  border: none;
+  background: var(--aji);
+  color: white;
+  padding: 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: .2s;
+  margin-top: 4px;
 }
 
-.btn:hover{
-  background:#96281b;
-  transform:translateY(-1px);
+.btn:hover {
+  background: #96281b;
+  transform: translateY(-1px);
 }
 
-.error{
-  margin-top:14px;
-  color:#b91c1c;
-  text-align:center;
-  font-size:13px;
-  display:none;
+.error {
+  margin-top: 14px;
+  color: #b91c1c;
+  text-align: center;
+  font-size: 13px;
+  display: none;
 }
 
-.back{
-  margin-top:20px;
-  text-align:center;
+.back {
+  margin-top: 20px;
+  text-align: center;
 }
 
-.back a{
-  color:#7d5134;
-  text-decoration:none;
-  font-size:13px;
+.back a {
+  color: #7d5134;
+  text-decoration: none;
+  font-size: 13px;
+  display: inline-block;
+  padding: 4px 8px;
 }
 
-.back a:hover{
-  text-decoration:underline;
+.back a:hover {
+  text-decoration: underline;
+}
+
+/* ══════════ PANTALLAS MEDIANAS Y GRANDES ══════════ */
+@media (min-width: 480px) {
+  .login-card {
+    padding: 38px; /* Vuelve al padding amplio original */
+  }
+
+  .logo-icon {
+    font-size: 48px;
+  }
+
+  .logo h1 {
+    font-size: 34px;
+  }
+
+  input {
+    font-size: 14px;
+  }
 }
 </style>
+
 </head>
 
 <body>
@@ -198,7 +228,7 @@ async function login() {
   const password = document.getElementById('password').value;
 
   try {
-    const res = await fetch('/api/login', {
+    const res = await fetch('http://localhost:3001/api/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
