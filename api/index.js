@@ -12,34 +12,8 @@ app.use(express.urlencoded({ extended: true }));
 // Servir archivos estáticos de la carpeta public
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
-app.get('/debug', (req, res) => {
-  const fs = require('fs');
-  try {
-    const publicPath = path.join(__dirname, '..', 'public');
-    res.json({
-      __dirname,
-      publicPathIntentada: publicPath,
-      existePublic: fs.existsSync(publicPath),
-      contenidoPublic: fs.existsSync(publicPath) ? fs.readdirSync(publicPath) : null,
-      contenidoRaiz: fs.readdirSync(path.join(__dirname, '..'))
-    });
-  } catch (e) {
-    res.json({ error: e.message });
-  }
-});
-
 app.get('/', (req, res) => {
-  const filePath = path.join(__dirname, '..', 'public', 'index.html');
-  res.sendFile(filePath, (err) => {
-    if (err) {
-      console.error('Error sirviendo index.html:', err);
-      res.status(err.statusCode || 500).json({
-        errorSendFile: err.message,
-        code: err.code,
-        filePath
-      });
-    }
-  });
+  res.sendFile(path.join(__dirname, '..', 'public', 'inicio.html'));
 });
 app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'login.html'));
