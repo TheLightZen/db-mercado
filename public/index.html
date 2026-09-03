@@ -11,26 +11,26 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  /* Paleta paceña: tierra, ají, chicha, aguayo */
-  --aji:        #c0392b;   /* rojo ají */
+
+  --aji:        #c0392b;
   --aji-dark:   #96281b;
   --aji-light:  #f5b7b1;
-  --chicha:     #a04000;   /* café chicha */
+  --chicha:     #a04000;
   --chicha-d:   #784212;
-  --oro:        #f39c12;   /* amarillo quinua / aguayo */
+  --oro:        #f39c12;
   --oro-light:  #fdebd0;
-  --verde:      #1e8449;   /* verde coca */
+  --verde:      #1e8449;
   --verde-light:#d5f5e3;
-  --morado:     #6c3483;   /* morado aguayo */
+  --morado:     #6c3483;
   --morado-l:   #e8daef;
-  --tierra:     #6e2f1a;   /* tierra paceña */
-  --crema:      #fdf6e3;   /* crema hoja de coca */
+  --tierra:     #6e2f1a;
+  --crema:      #fdf6e3;
   --crema2:     #fef9f0;
   --borde:      #e8c99a;
   --text:       #2c1503;
   --muted:      #7d5134;
   --muted2:     #a0785a;
-  --sidebar-bg: #3b0f0f;   /* guindo oscuro */
+  --sidebar-bg: #3b0f0f;
   --sidebar2:   #4e1414;
   --sans: 'Source Sans 3', sans-serif;
   --display: 'Playfair Display', serif;
@@ -41,17 +41,12 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--crema);color:var(--text);font-family:var(--sans);font-size:14px;min-height:100vh;display:flex}
 
-/* ── Patrón de fondo aguayo ── */
 body::before{
   content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   background-image:
     repeating-linear-gradient(90deg,rgba(192,57,43,.04) 0px,rgba(192,57,43,.04) 2px,transparent 2px,transparent 32px),
     repeating-linear-gradient(0deg,rgba(243,156,18,.04) 0px,rgba(243,156,18,.04) 2px,transparent 2px,transparent 32px);
 }
-
-/* ══════════ SIDEBAR ══════════ */
-
-
 
 aside{
   width:230px;min-height:100vh;background:var(--sidebar-bg);
@@ -60,7 +55,6 @@ aside{
   position:fixed;top:0;left:0;bottom:0;z-index:10;
 }
 
-/* Franja decorativa aguayo arriba */
 aside::before{
   content:'';display:block;height:6px;
   background:repeating-linear-gradient(90deg,
@@ -108,7 +102,6 @@ aside::before{
   text-transform:uppercase;
 }
 
-
 .logo h1{font-family:var(--display);font-size:19px;font-weight:700;color:#fff;line-height:1.1}
 .logo span{
   display:block;
@@ -148,7 +141,6 @@ nav{flex:1;padding:10px 0}
 }
 .nav-item svg{width:16px;height:16px;flex-shrink:0}
 
-/* Franja decorativa abajo */
 .sidebar-footer{
   padding:12px 18px 14px;
   border-top:1px solid rgba(255,255,255,.08);
@@ -161,14 +153,12 @@ nav{flex:1;padding:10px 0}
 @keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
 .status-text{font-size:11px;color:#f0c8a0}
 
-/* ══════════ MAIN ══════════ */
 main{margin-left:230px;flex:1;padding:30px 36px;min-height:100vh;position:relative;z-index:1}
 
 .page{display:none;animation:fadeIn .25s ease}
 .page.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-/* ── Encabezado de página ── */
 .page-header{
   display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;
   padding-bottom:20px;border-bottom:2px solid var(--borde);position:relative;
@@ -179,7 +169,6 @@ main{margin-left:230px;flex:1;padding:30px 36px;min-height:100vh;position:relati
 .page-header h2{font-family:var(--display);font-size:26px;font-weight:700;color:var(--tierra);line-height:1.1}
 .page-header p{color:var(--muted2);font-size:13px;margin-top:4px}
 
-/* ── Stats ── */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
 .stat-card{
   background:#fff;border:1.5px solid var(--borde);border-radius:var(--r);
@@ -188,14 +177,12 @@ main{margin-left:230px;flex:1;padding:30px 36px;min-height:100vh;position:relati
 }
 .stat-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(110,47,26,.12)}
 
-/* Barra superior de color por categoría */
 .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
 .stat-card:nth-child(1)::before{background:var(--aji)}
 .stat-card:nth-child(2)::before{background:var(--verde)}
 .stat-card:nth-child(3)::before{background:var(--oro)}
 .stat-card:nth-child(4)::before{background:var(--morado)}
 
-/* Patrón decorativo esquina */
 .stat-card::after{
   content:'';position:absolute;bottom:-8px;right:-8px;
   width:56px;height:56px;border-radius:50%;
@@ -207,7 +194,6 @@ main{margin-left:230px;flex:1;padding:30px 36px;min-height:100vh;position:relati
 .stat-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);opacity:.08}
 .stat-icon svg{width:52px;height:52px}
 
-/* ── Tarjeta de tabla ── */
 .table-card{background:#fff;border:1.5px solid var(--borde);border-radius:var(--r);overflow:hidden}
 .table-toolbar{
   display:flex;align-items:center;justify-content:space-between;
@@ -246,7 +232,6 @@ td{padding:11px 16px;border-bottom:1px solid #f5e8d3;font-size:13px;color:var(--
 tr:last-child td{border-bottom:none}
 tr:hover td{background:#fef6ea}
 
-/* ── Badges ── */
 .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.3px}
 .badge-aji    {background:#fde8e6;color:#8b1a0d}
 .badge-verde  {background:#d5f5e3;color:#0e5a28}
@@ -254,7 +239,6 @@ tr:hover td{background:#fef6ea}
 .badge-morado {background:#ede0f5;color:#4a1466}
 .badge-chicha {background:#f9ddd0;color:#6b2a0f}
 
-/* ── Botones ── */
 .btn{
   display:inline-flex;align-items:center;gap:7px;
   padding:8px 18px;border-radius:var(--r-sm);font-size:13px;font-weight:600;
@@ -275,7 +259,6 @@ tr:hover td{background:#fef6ea}
 .btn-icon.danger:hover{border-color:var(--aji);color:var(--aji);background:#fde8e6}
 .actions{display:flex;gap:6px}
 
-/* ── Modal ── */
 .modal-overlay{
   display:none;position:fixed;inset:0;background:rgba(30,10,5,.72);
   backdrop-filter:blur(4px);z-index:100;align-items:center;justify-content:center;
@@ -286,7 +269,7 @@ tr:hover td{background:#fef6ea}
   width:560px;max-width:95vw;max-height:90vh;overflow-y:auto;
   animation:slideUp .22s ease;box-shadow:0 20px 60px rgba(110,47,26,.2);
 }
-/* Franja aguayo modal */
+
 .modal::before{
   content:'';display:block;height:5px;
   background:repeating-linear-gradient(90deg,
@@ -306,7 +289,6 @@ tr:hover td{background:#fef6ea}
 .modal-body{padding:22px 24px}
 .modal-footer{padding:14px 24px;border-top:1.5px solid var(--borde);display:flex;justify-content:flex-end;gap:10px}
 
-/* ── Formulario ── */
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .form-grid.cols-1{grid-template-columns:1fr}
 .form-group{display:flex;flex-direction:column;gap:5px}
@@ -321,7 +303,6 @@ input:focus,select:focus,textarea:focus{border-color:var(--aji);background:#fff}
 select option{background:#fff}
 textarea{resize:vertical;min-height:72px}
 
-/* ── Toast ── */
 #toast{
   position:fixed;bottom:28px;right:28px;z-index:999;
   background:#fff;border:1.5px solid var(--borde);border-radius:var(--r);
@@ -337,13 +318,11 @@ textarea{resize:vertical;min-height:72px}
 #toast.success .toast-dot{background:var(--verde)}
 #toast.error .toast-dot{background:var(--aji)}
 
-/* ── Empty/loading ── */
 .empty{padding:48px;text-align:center;color:var(--muted2);font-size:13px}
 .spinner{display:inline-block;width:20px;height:20px;border:2px solid var(--borde);border-top-color:var(--aji);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .recent-row-date{color:var(--muted2);font-size:12px}
 
-/* ══════════ DASHBOARD ESPECIAL ══════════ */
 .dash-welcome{
   background:linear-gradient(135deg,var(--sidebar-bg),var(--chicha-d));
   border-radius:var(--r);padding:24px 28px;margin-bottom:28px;
@@ -364,7 +343,6 @@ textarea{resize:vertical;min-height:72px}
 .dash-welcome h3{font-family:var(--display);font-size:21px;color:#fff;font-weight:700;margin-bottom:5px}
 .dash-welcome p{color:#f5c6a0;font-size:13px}
 
-/* ══════════ DECORACIÓN LATERAL AGUAYO ══════════ */
 .aguayo-stripe{
   height:4px;width:100%;margin-bottom:20px;border-radius:2px;
   background:repeating-linear-gradient(90deg,
@@ -376,13 +354,11 @@ textarea{resize:vertical;min-height:72px}
 </head>
 <body>
 
-<!-- ═══════════════════════════════ SIDEBAR ═══════════════════════════════ -->
 <aside>
   <div class="logo">
-    
-     
+
       <h1>Mercado<br>Popular</h1>
-    
+
     <span>Sistema de gestión</span>
   </div>
   <nav>
@@ -431,10 +407,8 @@ textarea{resize:vertical;min-height:72px}
 </div>
 </aside>
 
-<!-- ═══════════════════════════════ MAIN ═════════════════════════════════ -->
 <main>
 
-  <!-- DASHBOARD -->
   <section class="page active" id="page-dashboard">
     <div class="page-header">
       <div>
@@ -480,7 +454,6 @@ textarea{resize:vertical;min-height:72px}
     </div>
   </section>
 
-  <!-- INGRESOS -->
   <section class="page" id="page-ingresos">
     <div class="page-header">
       <div><h2>Ingreso de Mercancía</h2><p>Registra y gestiona los ingresos al mercado</p></div>
@@ -503,7 +476,6 @@ textarea{resize:vertical;min-height:72px}
     </div>
   </section>
 
-  <!-- DUEÑOS -->
   <section class="page" id="page-duenos">
     <div class="page-header">
       <div><h2>Dueños de Puesto</h2><p>Administra los propietarios de puestos del mercado</p></div>
@@ -526,7 +498,6 @@ textarea{resize:vertical;min-height:72px}
     </div>
   </section>
 
-  <!-- PROVEEDORES -->
   <section class="page" id="page-proveedores">
     <div class="page-header">
       <div><h2>Proveedores</h2><p>Gestiona los proveedores del mercado</p></div>
@@ -549,7 +520,6 @@ textarea{resize:vertical;min-height:72px}
     </div>
   </section>
 
-  <!-- CATEGORÍAS -->
   <section class="page" id="page-categorias">
     <div class="page-header">
       <div><h2>Categorías</h2><p>Gestiona las categorías de productos</p></div>
@@ -567,7 +537,6 @@ textarea{resize:vertical;min-height:72px}
     </div>
   </section>
 
-  <!-- SECTORES -->
   <section class="page" id="page-sectores">
     <div class="page-header">
   <div>
@@ -598,7 +567,6 @@ textarea{resize:vertical;min-height:72px}
     </div>
   </section>
 
-  <!-- PERSONAS -->
   <section class="page" id="page-personas">
     <div class="page-header">
       <div><h2>Directorio de Personas</h2>
@@ -623,9 +591,6 @@ textarea{resize:vertical;min-height:72px}
 
 </main>
 
-<!-- ═══════════════════════════════ MODALES ═══════════════════════════════ -->
-
-<!-- Modal Ingreso -->
 <div class="modal-overlay" id="modal-ingreso">
   <div class="modal">
     <div class="modal-header">
@@ -661,7 +626,6 @@ textarea{resize:vertical;min-height:72px}
   </div>
 </div>
 
-<!-- Modal Dueño -->
 <div class="modal-overlay" id="modal-dueno">
   <div class="modal">
     <div class="modal-header">
@@ -689,7 +653,6 @@ textarea{resize:vertical;min-height:72px}
   </div>
 </div>
 
-<!-- Modal Proveedor -->
 <div class="modal-overlay" id="modal-proveedor">
   <div class="modal">
     <div class="modal-header">
@@ -710,7 +673,6 @@ textarea{resize:vertical;min-height:72px}
   </div>
 </div>
 
-<!-- Modal Categoría -->
 <div class="modal-overlay" id="modal-categoria">
   <div class="modal">
     <div class="modal-header">
@@ -730,8 +692,6 @@ textarea{resize:vertical;min-height:72px}
   </div>
 </div>
 
-
-<!-- Modal Sector -->
 <div class="modal-overlay" id="modal-sector">
   <div class="modal">
     <div class="modal-header">
@@ -760,10 +720,6 @@ textarea{resize:vertical;min-height:72px}
   </div>
 </div>
 
-
-
-
-<!-- Toast -->
 <div id="toast"><div class="toast-dot"></div><span id="toast-msg"></span></div>
 
 <script>
@@ -772,14 +728,10 @@ textarea{resize:vertical;min-height:72px}
   window.location.href = 'login.html';
 }
 
-
-
 const API = '/api';
 let editingId = null;
 let currentModal = null;
 let cache = { categorias:[], duenos:[], proveedores:[], puntos:[], usuarios:[], sectores:[] };
-
-
 
 function campoVacio(id) {
   return document.getElementById(id).value.trim() === '';
@@ -804,9 +756,6 @@ function validarSelect(id, mensaje) {
   }
   return true;
 }
-
-
-
 
 function toast(msg, type='success') {
   const t = document.getElementById('toast');
@@ -1015,8 +964,8 @@ function closeModal(type) {
 }
 
 function clearForm(type) {
-  const ids = { 
-    ingreso:['i-fecha','i-producto','i-cantidad','i-obs'], 
+  const ids = {
+    ingreso:['i-fecha','i-producto','i-cantidad','i-obs'],
 
     dueno:[
       'd-ci',
@@ -1025,18 +974,18 @@ function clearForm(type) {
 'd-materno',
       'd-telefono',
       'd-puesto'
-    ], 
+    ],
 
-    proveedor:['p-nombre','p-celular','p-placa'], 
+    proveedor:['p-nombre','p-celular','p-placa'],
 
     categoria:['c-nombre','c-desc'],
 
     sector:['s-nombre','s-desc']
   };
 
-  (ids[type] || []).forEach(id => { 
-    const el = document.getElementById(id); 
-    if (el) el.value = ''; 
+  (ids[type] || []).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
   });
 
   if (type === 'ingreso') {
@@ -1099,10 +1048,7 @@ async function saveIngreso() {
 
   if (!validarSelect('i-punto', 'Seleccione un punto de control')) return;
 
- 
-
   if (!validarTexto('i-fecha', 'Seleccione una fecha')) return;
-
 
   const body = {
     nombreProducto:document.getElementById('i-producto').value,
@@ -1127,7 +1073,7 @@ function editDueno(r) {
 
     document.getElementById('d-ci').value      = r.ci || '';
     document.getElementById('d-nombres').value  = r.nombres || '';
-    
+
     document.getElementById('d-paterno').value  = r.primerApellido || '';
     document.getElementById('d-materno').value  = r.segundoApellido || '';
 
@@ -1155,7 +1101,6 @@ async function saveDueno() {
   await saveRecord('duenos', body, editingId, loadDuenos, 'dueno');
 }
 
-
 function editProveedor(r) {
   openModal('proveedor').then(() => {
     editingId = r.idProveedor;
@@ -1167,8 +1112,6 @@ function editProveedor(r) {
 }
 
 async function saveProveedor() {
-
-
 
   if (!validarTexto('p-nombre', 'Ingrese el nombre del proveedor')) return;
 
@@ -1192,17 +1135,10 @@ function editCategoria(r) {
 
 async function saveCategoria() {
 
-
-
-
-
-
   if (!validarTexto('c-nombre', 'Ingrese el nombre de la categoría')) return;
   const body = { nombre_categoria:document.getElementById('c-nombre').value, descripcion:document.getElementById('c-desc').value };
   await saveRecord('categorias',body,editingId,loadCategorias,'categoria');
 }
-
-
 
 function editSector(r) {
   openModal('sector').then(() => {
@@ -1223,8 +1159,6 @@ async function saveSector() {
 
   await saveRecord('sectores', body, editingId, loadSectores, 'sector');
 }
-
-
 
 async function saveRecord(endpoint,body,id,reloadFn,modalKey) {
   try {
@@ -1276,8 +1210,6 @@ function logout(){
   localStorage.removeItem('adminAuth');
   window.location.href = 'inicio.html';
 }
-
-
 
 </script>
 </body>

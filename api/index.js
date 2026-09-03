@@ -2,14 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const pool = require('./db');
-
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Servir archivos estáticos de la carpeta public
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.get('/', (req, res) => {
@@ -22,19 +20,12 @@ app.get('/inicio', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'inicio.html'));
 });
 
-// ── Helper ───────────────────────────────────────────
 const q = async (sql, params = []) => {
   const [rows] = await pool.execute(sql, params);
   return rows;
 };
 
-// ════════════════════════════════════════════════════
-//  ENDPOINTS DE LECTURA (GET)
-// ════════════════════════════════════════════════════
-
-
 app.get('/api/ping', (_, res) => res.json({ ok: true }));
-
 
 app.post('/api/login', async (req, res) => {
   try {
@@ -65,8 +56,6 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-
-
 app.get('/api/dashboard', async (_, res) => {
   try {
     const [ingresos] = await q('SELECT COUNT(*) AS total FROM ingreso_mercancia WHERE activo = 1');
@@ -95,8 +84,6 @@ app.get('/api/dashboard', async (_, res) => {
     });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
-
-// Catálogos simples
 const simpleGet = (table, order = '') => async (_, res) => {
   try { res.json(await q(`SELECT * FROM ${table} ${order}`)); }
   catch (e) { res.status(500).json({ error: e.message }); }
@@ -120,7 +107,7 @@ app.get('/api/telefonos',    simpleGet('telefonos'));
 app.get('/api/puntos', async (_, res) => {
   try {
     res.json(await q(`
-      SELECT 
+      SELECT
         pc.idPunto,
         pc.nombre_punto,
         pc.administrador_idAdministrador,
@@ -137,7 +124,7 @@ app.get('/api/puntos', async (_, res) => {
 app.get('/api/duenos', async (_, res) => {
   try {
     res.json(await q(`
-      SELECT 
+      SELECT
         dp.idDueno,
         dp.Personas_idPersona,
         p.ci,
@@ -160,7 +147,7 @@ app.get('/api/duenos', async (_, res) => {
 app.get('/api/proveedores', async (_, res) => {
   try {
     res.json(await q(`
-      SELECT 
+      SELECT
         pr.idProveedor,
         pr.nombre_proveedor,
         pr.idProcedencia,
@@ -176,15 +163,15 @@ app.get('/api/proveedores', async (_, res) => {
       WHERE pr.activo = 1
       ORDER BY pr.nombre_proveedor
     `));
-  } catch (e) { 
-    res.status(500).json({ error: e.message }); 
+  } catch (e) {
+    res.status(500).json({ error: e.message });
   }
 });
 
 app.get('/api/personas', async (_, res) => {
   try {
     res.json(await q(`
-      SELECT 
+      SELECT
         p.idPersona,
         p.ci,
         CONCAT(p.nombres, ' ', p.primerApellido) AS nombre_completo,
@@ -198,16 +185,16 @@ app.get('/api/personas', async (_, res) => {
 
       FROM Personas p
 
-      LEFT JOIN administradores a 
+      LEFT JOIN administradores a
         ON a.Personas_idPersona = p.idPersona
 
-      LEFT JOIN dueno_puesto dp 
+      LEFT JOIN dueno_puesto dp
         ON dp.Personas_idPersona = p.idPersona
 
-      LEFT JOIN persona_telefono pt 
+      LEFT JOIN persona_telefono pt
         ON pt.idPersona = p.idPersona
 
-      LEFT JOIN telefonos t 
+      LEFT JOIN telefonos t
         ON t.idTelefono = pt.idTelefono
 
       ORDER BY p.primerApellido
@@ -217,14 +204,10 @@ app.get('/api/personas', async (_, res) => {
   }
 });
 
-
-
-
-
 app.get('/api/ingresos', async (_, res) => {
   try {
     res.json(await q(`
-      SELECT 
+      SELECT
         im.*,
         c.nombre_categoria,
         CONCAT(p.nombres, ' ', p.primerApellido) AS dueno,
@@ -245,15 +228,10 @@ JOIN Personas pa ON pa.idPersona = a.Personas_idPersona
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-// ════════════════════════════════════════════════════
-//  ENDPOINTS DE ESCRITURA (POST / PUT / DELETE)
-// ════════════════════════════════════════════════════
-
-// ── Categorías ──────────────────────────────────────
 app.post('/api/categorias', async (req, res) => {
   try {
     const { nombre_categoria, descripcion } = req.body;
-    await q('INSERT INTO categorias (nombre_categoria, descripcion) VALUES (?,?)', 
+    await q('INSERT INTO categorias (nombre_categoria, descripcion) VALUES (?,?)',
             [nombre_categoria, descripcion]);
     res.json({ ok: true });
   } catch (e) { res.status(500).json({ error: e.message }); }
@@ -275,11 +253,10 @@ app.delete('/api/categorias/:id', async (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-// ── Dueños ──────────────────────────────────────────
 app.post('/api/duenos', async (req, res) => {
   try {
 
-    const { 
+    const {
       ci,
       nombres,
       primerApellido,
@@ -302,8 +279,6 @@ app.post('/api/duenos', async (req, res) => {
 
     const nuevoIdPersona = resPersona.insertId;
 
-    /* ===== TELEFONO ===== */
-
     if (telefono && telefono.trim() !== '') {
 
       const resTelefono = await q(`
@@ -320,8 +295,6 @@ app.post('/api/duenos', async (req, res) => {
         resTelefono.insertId
       ]);
     }
-
-    /* ===== DUEÑO ===== */
 
     await q(`
       INSERT INTO dueno_puesto
@@ -350,20 +323,20 @@ app.put('/api/duenos/:id', async (req, res) => {
     }
     const idPersona = duenoActual[0].Personas_idPersona;
     await q(`
-      UPDATE Personas 
-      SET ci = ?, nombres = ?, primerApellido = ?, segundoApellido = ? 
+      UPDATE Personas
+      SET ci = ?, nombres = ?, primerApellido = ?, segundoApellido = ?
       WHERE idPersona = ?`,
       [ci, nombres, primerApellido, segundoApellido, idPersona]);
 
     await q(`
-      UPDATE dueno_puesto 
-      SET idSector = ?, numero_puesto = ? 
+      UPDATE dueno_puesto
+      SET idSector = ?, numero_puesto = ?
       WHERE idDueno = ?`,
       [idSector || null, numero_puesto, idDueno]);
 
     res.json({ ok: true });
-  } catch (e) { 
-    res.status(500).json({ error: e.message }); 
+  } catch (e) {
+    res.status(500).json({ error: e.message });
   }
 });
 
@@ -382,7 +355,6 @@ app.delete('/api/duenos/:id', async (req, res) => {
   }
 });
 
-// ── Proveedores ─────────────────────────────────────
 app.post('/api/proveedores', async (req, res) => {
   try {
     const { nombre_proveedor, celular, placa_vehiculo } = req.body;
@@ -403,7 +375,7 @@ app.post('/api/proveedores', async (req, res) => {
     }
 
     await q(`
-      INSERT INTO proveedores 
+      INSERT INTO proveedores
       (nombre_proveedor, idProcedencia, placa_vehiculo, idTelefono)
       VALUES (?, ?, ?, ?)
     `, [
@@ -444,27 +416,26 @@ app.delete('/api/proveedores/:id', async (req, res) => {
   }
 });
 
-// ── Ingreso de Mercancía (principal) ─────────────────
 app.post('/api/ingresos', async (req, res) => {
   try {
     const {
       nombreProducto, pesoCantidad, UnidadMedida,
       fechaEntrada, observaciones,
       dueno_puesto_idDueno, proveedores_idProveedor,
-      categorias_idCategoria, punto_control_idPunto, usuarios_idUsuario // Viene mapeado desde el front
+      categorias_idCategoria, punto_control_idPunto, usuarios_idUsuario
     } = req.body;
-    await q(`INSERT INTO ingreso_mercancia 
-             (nombreProducto, pesoCantidad, UnidadMedida, fechaEntrada, observaciones, 
-              dueno_puesto_idDueno, proveedores_idProveedor, categorias_idCategoria, punto_control_idPunto, administrador_idAdministrador, activo) 
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`, 
+    await q(`INSERT INTO ingreso_mercancia
+             (nombreProducto, pesoCantidad, UnidadMedida, fechaEntrada, observaciones,
+              dueno_puesto_idDueno, proveedores_idProveedor, categorias_idCategoria, punto_control_idPunto, administrador_idAdministrador, activo)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`,
             [
-              nombreProducto, pesoCantidad, UnidadMedida, fechaEntrada, observaciones, 
+              nombreProducto, pesoCantidad, UnidadMedida, fechaEntrada, observaciones,
               dueno_puesto_idDueno, proveedores_idProveedor, categorias_idCategoria, punto_control_idPunto, usuarios_idUsuario
             ]);
 
     res.json({ ok: true });
-  } catch (e) { 
-    res.status(500).json({ error: e.message }); 
+  } catch (e) {
+    res.status(500).json({ error: e.message });
   }
 });
 
@@ -474,7 +445,7 @@ app.put('/api/ingresos/:id', async (req, res) => {
       nombreProducto, pesoCantidad, UnidadMedida,
       fechaEntrada, observaciones,
       dueno_puesto_idDueno, proveedores_idProveedor,
-      categorias_idCategoria, punto_control_idPunto, usuarios_idUsuario // Viene mapeado desde el front
+      categorias_idCategoria, punto_control_idPunto, usuarios_idUsuario
     } = req.body;
 
     await q(`UPDATE ingreso_mercancia SET
@@ -490,7 +461,7 @@ app.put('/api/ingresos/:id', async (req, res) => {
               categorias_idCategoria, punto_control_idPunto, usuarios_idUsuario,
               req.params.id
             ]);
-            
+
     res.json({ ok: true });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
@@ -508,12 +479,6 @@ app.delete('/api/ingresos/:id', async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
-
-// ════════════════════════════════════════════════════
-
-
-
-
 
 app.post('/api/sectores', async (req, res) => {
   try {

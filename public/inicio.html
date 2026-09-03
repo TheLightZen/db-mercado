@@ -301,12 +301,8 @@ async function generarPDF() {
 
   const fecha = new Date().toLocaleDateString('es-BO');
 
-  // ═══════════════ HEADER ═══════════════
-
   doc.setFillColor(59, 15, 15);
   doc.rect(0, 0, 210, 38, 'F');
-
-  // Línea decorativa aguayo
   const colores = [
     [192,57,43],
     [243,156,18],
@@ -325,8 +321,6 @@ async function generarPDF() {
 
     x += 7;
   }
-
-  // Título
   doc.setTextColor(255,255,255);
 
   doc.setFont('helvetica', 'bold');
@@ -338,14 +332,10 @@ async function generarPDF() {
   doc.setTextColor(245,198,160);
 
   doc.text('Sistema de Control e Informe de Mercancías', 15, 29);
-
-  // Fecha
   doc.setTextColor(255,255,255);
   doc.setFontSize(10);
 
   doc.text('Fecha de emisión: ' + fecha, 150, 20);
-
-  // ═══════════════ RESUMEN ═══════════════
 
   doc.setTextColor(44,21,3);
 
@@ -353,8 +343,6 @@ async function generarPDF() {
   doc.setFont('helvetica', 'bold');
 
   doc.text('Resumen General', 15, 55);
-
-  // Cards estadísticas
   const cards = [
     ['Ingresos', dashboardData.stats.ingresos, [192,57,43]],
     ['Proveedores', dashboardData.stats.proveedores, [30,132,73]],
@@ -375,8 +363,6 @@ async function generarPDF() {
     doc.setLineWidth(.8);
 
     doc.roundedRect(startX, 65, 42, 28, 4, 4);
-
-    // barra superior
     doc.setFillColor(color[0], color[1], color[2]);
     doc.roundedRect(startX, 65, 42, 4, 2, 2, 'F');
 
@@ -395,8 +381,6 @@ async function generarPDF() {
 
     startX += 46;
   });
-
-  // ═══════════════ DESCRIPCIÓN ═══════════════
 
   doc.setTextColor(44,21,3);
 
@@ -419,17 +403,11 @@ y trazable del movimiento comercial del mercado.
 
   doc.text(texto, 15, 125);
 
-  // ═══════════════ ÚLTIMOS INGRESOS ═══════════════
-
   doc.setFontSize(18);
   doc.setFont('helvetica', 'bold');
 
   doc.text('Últimos Ingresos Registrados', 15, 165);
-
-  // Tabla
   let y = 178;
-
-  // encabezado
   doc.setFillColor(59,15,15);
   doc.rect(15, y, 180, 10, 'F');
 
@@ -446,8 +424,6 @@ y trazable del movimiento comercial del mercado.
   y += 10;
 
   ingresosData.slice(0,8).forEach((i, index) => {
-
-    // fondo alternado
     if(index % 2 === 0){
       doc.setFillColor(255,248,237);
       doc.rect(15, y, 180, 10, 'F');
@@ -465,8 +441,6 @@ y trazable del movimiento comercial del mercado.
 
     y += 10;
   });
-
-  // ═══════════════ FOOTER ═══════════════
 
   doc.setDrawColor(232,201,154);
   doc.line(15, 280, 195, 280);
@@ -486,8 +460,6 @@ y trazable del movimiento comercial del mercado.
     145,
     287
   );
-
-  // ═══════════════ GUARDAR ═══════════════
 
   doc.save('informe_mercado_popular.pdf');
 }
