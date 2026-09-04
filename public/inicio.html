@@ -41,7 +41,7 @@ body {
 .hero {
   background: linear-gradient(135deg, #3b0f0f, #784212);
   color: white;
-  padding: 30px 20px; /* Padding reducido para móviles */
+  padding: 30px 20px; 
   position: relative;
 }
 
@@ -62,7 +62,7 @@ body {
 
 .hero h1 {
   font-family: var(--display);
-  font-size: 30px; /* Tamaño adaptativo para móvil */
+  font-size: 30px; 
   margin-bottom: 10px;
   line-height: 1.2;
 }
@@ -77,7 +77,7 @@ body {
 .actions {
   margin-top: 20px;
   display: flex;
-  flex-direction: column; /* Apilados en móviles */
+  flex-direction: column; 
   gap: 10px;
 }
 
@@ -109,13 +109,13 @@ body {
 
 /* ══════════ MAIN CONTENT ══════════ */
 main {
-  padding: 20px 16px; /* Ajuste para pantalla pequeña */
+  padding: 20px 16px; 
 }
 
 /* Grilla de Tarjetas (Stats) */
 .cards {
   display: grid;
-  grid-template-columns: 1fr; /* 1 columna en móvil */
+  grid-template-columns: 1fr; 
   gap: 14px;
   margin-bottom: 24px;
 }
@@ -161,7 +161,7 @@ main {
 /* Grilla de Paneles Informativos */
 .info-grid {
   display: grid;
-  grid-template-columns: 1fr; /* 1 columna en móvil */
+  grid-template-columns: 1fr; 
   gap: 16px;
 }
 
@@ -212,77 +212,27 @@ main {
 
 /* ══════════ MEDIA QUERIES (ADAPTABILIDAD) ══════════ */
 
-/* Tablets (>= 600px) */
 @media (min-width: 600px) {
-  .hero {
-    padding: 40px 40px;
-  }
-
-  .hero h1 {
-    font-size: 38px;
-  }
-
-  .actions {
-    flex-direction: row; /* Botones uno al lado del otro */
-  }
-
-  .btn {
-    display: inline-block;
-  }
-
-  .cards {
-    grid-template-columns: repeat(2, 1fr); /* 2 columnas */
-    gap: 16px;
-  }
-
-  main {
-    padding: 28px 40px;
-  }
+  .hero { padding: 40px 40px; }
+  .hero h1 { font-size: 38px; }
+  .actions { flex-direction: row; }
+  .btn { display: inline-block; }
+  .cards { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  main { padding: 28px 40px; }
 }
 
-/* Pantallas Grandes / Escritorio (>= 900px) */
 @media (min-width: 900px) {
-  .hero {
-    padding: 50px 70px;
-  }
-
-  .hero h1 {
-    font-size: 44px;
-  }
-
-  .hero p {
-    font-size: 17px;
-  }
-
-  main {
-    padding: 32px 70px;
-  }
-
-  .cards {
-    grid-template-columns: repeat(4, 1fr); /* 4 columnas originales */
-    gap: 18px;
-  }
-
-  .card h2 {
-    font-size: 42px;
-  }
-
-  .info-grid {
-    grid-template-columns: 1.2fr 0.8fr; /* Proporción original en escritorio */
-    gap: 22px;
-  }
-
-  .panel {
-    padding: 26px;
-  }
-
-  .panel h2 {
-    font-size: 26px;
-  }
-
-  .panel p {
-    font-size: 15px;
-  }
+  .hero { padding: 50px 70px; }
+  .hero h1 { font-size: 44px; }
+  .hero p { font-size: 17px; }
+  main { padding: 32px 70px; }
+  .cards { grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .card h2 { font-size: 42px; }
+  .info-grid { grid-template-columns: 1.2fr 0.8fr; gap: 22px; }
+  .half-grid { grid-template-columns: 1fr 1fr; }
+  .panel { padding: 26px; }
+  .panel h2 { font-size: 26px; }
+  .panel p { font-size: 15px; }
 }
 </style>
 </head>
@@ -299,8 +249,8 @@ main {
   <div class="actions">
     <button class="btn btn-primary" onclick="generarPDF()">Descargar informe PDF</button>
     <a class="btn btn-secondary" href="login.html">
-  Entrar al panel administrativo
-</a>
+      Entrar al panel administrativo
+    </a>
   </div>
 </section>
 
@@ -340,8 +290,24 @@ main {
     </section>
 
     <section class="panel">
-      <h2>Resumen reciente</h2>
-      <div class="mini-list" id="resumen-reciente">
+      <h2>Historial de Ingresos</h2>
+      <div class="mini-list" id="historial-ingresos">
+        <div class="item">Cargando datos...</div>
+      </div>
+    </section>
+  </div>
+
+  <div class="info-grid half-grid" style="margin-top: 16px;">
+    <section class="panel">
+      <h2>Proveedores</h2>
+      <div class="mini-list" id="lista-proveedores">
+        <div class="item">Cargando datos...</div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Categorías</h2>
+      <div class="mini-list" id="lista-categorias">
         <div class="item">Cargando datos...</div>
       </div>
     </section>
@@ -358,30 +324,53 @@ const API = '/api';
 
 let dashboardData = null;
 let ingresosData = [];
+let proveedoresData = [];
+let categoriasData = [];
 
 async function cargarDatos() {
   dashboardData = await fetch(API + '/dashboard').then(r => r.json());
   ingresosData = await fetch(API + '/ingresos').then(r => r.json());
+  proveedoresData = await fetch(API + '/proveedores').then(r => r.json());
+  categoriasData = await fetch(API + '/categorias').then(r => r.json());
 
   document.getElementById('ingresos').textContent = dashboardData.stats.ingresos;
   document.getElementById('proveedores').textContent = dashboardData.stats.proveedores;
   document.getElementById('duenos').textContent = dashboardData.stats.duenos;
   document.getElementById('categorias').textContent = dashboardData.stats.categorias;
 
-  const contenedor = document.getElementById('resumen-reciente');
-
+  // Renderizar Ingresos
+  const contIngresos = document.getElementById('historial-ingresos');
   if (ingresosData.length === 0) {
-    contenedor.innerHTML = '<div class="item">No existen ingresos registrados.</div>';
-    return;
+    contIngresos.innerHTML = '<div class="item">No existen ingresos registrados.</div>';
+  } else {
+    contIngresos.innerHTML = ingresosData.map(i => `
+      <div class="item">
+        <strong>${i.nombreProducto}</strong> — ${new Date(i.fechaEntrada).toLocaleDateString('es-BO')}<br>
+        ${i.pesoCantidad} ${i.UnidadMedida} — ${i.nombre_categoria}<br>
+        Proveedor: ${i.proveedor}
+      </div>
+    `).join('');
   }
 
-  contenedor.innerHTML = ingresosData.slice(0, 4).map(i => `
-    <div class="item">
-      <strong>${i.nombreProducto}</strong><br>
-      ${i.pesoCantidad} ${i.UnidadMedida} — ${i.nombre_categoria}<br>
-      Proveedor: ${i.proveedor}
-    </div>
-  `).join('');
+  // Renderizar Proveedores
+  const contProveedores = document.getElementById('lista-proveedores');
+  if (proveedoresData.length === 0) {
+    contProveedores.innerHTML = '<div class="item">No existen proveedores registrados.</div>';
+  } else {
+    contProveedores.innerHTML = proveedoresData.map(p => `
+      <div class="item"><strong>${p.nombre_proveedor}</strong></div>
+    `).join('');
+  }
+
+  // Renderizar Categorías
+  const contCategorias = document.getElementById('lista-categorias');
+  if (categoriasData.length === 0) {
+    contCategorias.innerHTML = '<div class="item">No existen categorías registradas.</div>';
+  } else {
+    contCategorias.innerHTML = categoriasData.map(c => `
+      <div class="item"><strong>${c.nombre_categoria}</strong></div>
+    `).join('');
+  }
 }
 
 async function generarPDF() {
@@ -401,60 +390,50 @@ async function generarPDF() {
 
   const fecha = new Date().toLocaleDateString('es-BO');
 
-  // ═══════════════ HEADER ═══════════════
+  // Helper para manejar saltos de página automáticamente
+  function checkPageBreak(currentY, margin = 15) {
+    if (currentY + margin > 280) {
+      doc.addPage();
+      return 20;
+    }
+    return currentY;
+  }
 
+  // ═══════════════ HEADER ═══════════════
   doc.setFillColor(59, 15, 15);
   doc.rect(0, 0, 210, 38, 'F');
 
-  // Línea decorativa aguayo
   const colores = [
-    [192,57,43],
-    [243,156,18],
-    [30,132,73],
-    [108,52,131]
+    [192,57,43], [243,156,18], [30,132,73], [108,52,131]
   ];
 
   let x = 0;
-
-  for(let i=0;i<30;i++){
-
+  for(let i=0; i<30; i++) {
     const c = colores[i % colores.length];
-
     doc.setFillColor(c[0], c[1], c[2]);
     doc.rect(x, 0, 7, 6, 'F');
-
     x += 7;
   }
 
-  // Título
   doc.setTextColor(255,255,255);
-
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(24);
-
   doc.text('MERCADO POPULAR PACEÑO', 15, 20);
 
   doc.setFontSize(11);
   doc.setTextColor(245,198,160);
-
   doc.text('Sistema de Control e Informe de Mercancías', 15, 29);
 
-  // Fecha
   doc.setTextColor(255,255,255);
   doc.setFontSize(10);
-
   doc.text('Fecha de emisión: ' + fecha, 150, 20);
 
   // ═══════════════ RESUMEN ═══════════════
-
   doc.setTextColor(44,21,3);
-
   doc.setFontSize(18);
   doc.setFont('helvetica', 'bold');
-
   doc.text('Resumen General', 15, 55);
 
-  // Cards estadísticas
   const cards = [
     ['Ingresos', dashboardData.stats.ingresos, [192,57,43]],
     ['Proveedores', dashboardData.stats.proveedores, [30,132,73]],
@@ -463,46 +442,32 @@ async function generarPDF() {
   ];
 
   let startX = 15;
-
   cards.forEach(card => {
-
     const [titulo, valor, color] = card;
-
     doc.setFillColor(255,248,237);
     doc.roundedRect(startX, 65, 42, 28, 4, 4, 'F');
-
     doc.setDrawColor(color[0], color[1], color[2]);
     doc.setLineWidth(.8);
-
     doc.roundedRect(startX, 65, 42, 28, 4, 4);
 
-    // barra superior
     doc.setFillColor(color[0], color[1], color[2]);
     doc.roundedRect(startX, 65, 42, 4, 2, 2, 'F');
 
     doc.setTextColor(120,66,18);
-
     doc.setFontSize(9);
     doc.setFont('helvetica', 'bold');
-
     doc.text(titulo.toUpperCase(), startX + 4, 75);
 
     doc.setTextColor(44,21,3);
-
     doc.setFontSize(20);
-
     doc.text(String(valor), startX + 4, 87);
-
     startX += 46;
   });
 
   // ═══════════════ DESCRIPCIÓN ═══════════════
-
   doc.setTextColor(44,21,3);
-
   doc.setFontSize(18);
   doc.setFont('helvetica', 'bold');
-
   doc.text('Descripción del Sistema', 15, 115);
 
   doc.setFontSize(11);
@@ -514,81 +479,95 @@ al mercado popular. Facilita la organización de proveedores, categorías de pro
 dueños de puesto y puntos de control, permitiendo una administración más eficiente 
 y trazable del movimiento comercial del mercado.
   `;
-
   const texto = doc.splitTextToSize(descripcion, 175);
-
   doc.text(texto, 15, 125);
 
-  // ═══════════════ ÚLTIMOS INGRESOS ═══════════════
+  let y = 155;
 
+  // ═══════════════ HISTORIAL DE INGRESOS ═══════════════
+  y = checkPageBreak(y, 20);
   doc.setFontSize(18);
   doc.setFont('helvetica', 'bold');
-
-  doc.text('Últimos Ingresos Registrados', 15, 165);
-
-  // Tabla
-  let y = 178;
-
-  // encabezado
+  doc.text('Historial de Ingresos', 15, y);
+  
+  y += 8;
   doc.setFillColor(59,15,15);
   doc.rect(15, y, 180, 10, 'F');
-
   doc.setTextColor(255,231,194);
-
   doc.setFontSize(10);
   doc.setFont('helvetica', 'bold');
-
-  doc.text('Producto', 18, y + 6.5);
-  doc.text('Categoría', 72, y + 6.5);
-  doc.text('Cantidad', 112, y + 6.5);
-  doc.text('Proveedor', 145, y + 6.5);
+  doc.text('Fecha', 18, y + 6.5);
+  doc.text('Producto', 45, y + 6.5);
+  doc.text('Categoría', 100, y + 6.5);
+  doc.text('Cant.', 135, y + 6.5);
+  doc.text('Proveedor', 155, y + 6.5);
 
   y += 10;
+  
+  ingresosData.forEach((i, index) => {
+    y = checkPageBreak(y, 10);
 
-  ingresosData.slice(0,8).forEach((i, index) => {
-
-    // fondo alternado
     if(index % 2 === 0){
       doc.setFillColor(255,248,237);
       doc.rect(15, y, 180, 10, 'F');
     }
-
+    
     doc.setTextColor(44,21,3);
-
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(9);
 
-    doc.text(String(i.nombreProducto).substring(0,22), 18, y + 6);
-    doc.text(String(i.nombre_categoria).substring(0,14), 72, y + 6);
-    doc.text(`${i.pesoCantidad} ${i.UnidadMedida}`, 112, y + 6);
-    doc.text(String(i.proveedor).substring(0,18), 145, y + 6);
+    const fechaStr = new Date(i.fechaEntrada).toLocaleDateString('es-BO');
+    doc.text(fechaStr, 18, y + 6);
+    doc.text(String(i.nombreProducto).substring(0, 25), 45, y + 6);
+    doc.text(String(i.nombre_categoria).substring(0, 18), 100, y + 6);
+    doc.text(`${i.pesoCantidad} ${i.UnidadMedida}`, 135, y + 6);
+    doc.text(String(i.proveedor).substring(0, 18), 155, y + 6);
 
     y += 10;
   });
 
-  // ═══════════════ FOOTER ═══════════════
+  // ═══════════════ PROVEEDORES ═══════════════
+  y += 10;
+  y = checkPageBreak(y, 20);
+  doc.setFontSize(18);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Proveedores Registrados', 15, y);
+  y += 10;
 
+  proveedoresData.forEach((p) => {
+    y = checkPageBreak(y, 8);
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`• ${p.nombre_proveedor}`, 15, y);
+    y += 8;
+  });
+
+  // ═══════════════ CATEGORÍAS ═══════════════
+  y += 10;
+  y = checkPageBreak(y, 20);
+  doc.setFontSize(18);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Categorías Existentes', 15, y);
+  y += 10;
+
+  categoriasData.forEach((c) => {
+    y = checkPageBreak(y, 8);
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`• ${c.nombre_categoria}`, 15, y);
+    y += 8;
+  });
+
+  // ═══════════════ FOOTER ═══════════════
   doc.setDrawColor(232,201,154);
   doc.line(15, 280, 195, 280);
 
   doc.setTextColor(125,81,52);
-
   doc.setFontSize(9);
-
-  doc.text(
-    'Sistema de Gestión de Mercancías — Mercado Popular Paceño',
-    15,
-    287
-  );
-
-  doc.text(
-    'Documento generado automáticamente',
-    145,
-    287
-  );
+  doc.text('Sistema de Gestión de Mercancías — Mercado Popular Paceño', 15, 287);
+  doc.text('Documento generado automáticamente', 145, 287);
 
   // ═══════════════ GUARDAR ═══════════════
-
   doc.save('informe_mercado_popular.pdf');
 }
 
